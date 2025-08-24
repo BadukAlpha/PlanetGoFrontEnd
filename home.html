@@ -1,0 +1,628 @@
+<li><a href="#">📊 MyStats</a></li><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Community - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.5rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .header.sidebar-open {
+            left: 280px;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed, #f59e0b);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Astronaut Hamburger Button */
+        .hamburger {
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .hamburger:hover {
+            transform: scale(1.15) rotate(12deg);
+        }
+
+        .hamburger.active {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .astronaut {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            border: 2px solid;
+            border-image: linear-gradient(135deg, #00d4ff, #7c3aed) 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .astronaut::before {
+            content: '🚀';
+            font-size: 22px;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            filter: brightness(1.2);
+        }
+
+        .hamburger:hover .astronaut::before {
+            transform: scale(1.3) rotate(-12deg);
+        }
+
+        .hamburger.active .astronaut {
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            box-shadow: 0 0 40px rgba(124, 58, 237, 0.6);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(24px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 999;
+            padding: 2rem 0;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin: 0.5rem 0;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 1.2rem 2rem;
+            color: #9ca3af;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-radius: 0 50px 50px 0;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-nav a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            transform: scaleY(0);
+            transition: transform 0.4s ease;
+            border-radius: 0 2px 2px 0;
+        }
+
+        .sidebar-nav a::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .sidebar-nav a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            transform: translateX(12px);
+            padding-left: 2.5rem;
+        }
+
+        .sidebar-nav a:hover::before {
+            transform: scaleY(1);
+        }
+
+        .sidebar-nav a:hover::after {
+            opacity: 1;
+        }
+
+        .sidebar-nav a.active {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            border-left: 4px solid #00d4ff;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 0;
+            margin-top: 100px;
+            padding: 0 2rem 2rem;
+            transition: margin-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            min-height: calc(100vh - 100px);
+        }
+
+        .main-content.sidebar-open {
+            margin-left: 280px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            text-align: center;
+            padding: 8rem 2rem 6rem;
+            margin-bottom: 6rem;
+            position: relative;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .welcome-title {
+            font-size: clamp(3rem, 10vw, 5.5rem);
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed, #f59e0b, #00d4ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            animation: gradientFlow 6s ease-in-out infinite;
+            letter-spacing: -0.02em;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+        }
+
+        .welcome-subtitle {
+            font-size: 1.4rem;
+            color: #9ca3af;
+            margin-bottom: 0;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+        }
+
+        .content-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 6rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .content-card {
+            background: linear-gradient(135deg, rgba(15, 15, 15, 0.8), rgba(25, 25, 25, 0.6));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 2.5rem;
+            border-radius: 24px;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(124, 58, 237, 0.05));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .content-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.15);
+        }
+
+        .content-card:hover::before {
+            opacity: 1;
+        }
+
+        .content-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-card p {
+            color: #d1d5db;
+            line-height: 1.8;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+        }
+
+
+
+        /* Overlay for mobile */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 998;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header.sidebar-open {
+                left: 0;
+            }
+
+            .main-content.sidebar-open {
+                margin-left: 0;
+            }
+
+            .welcome-section {
+                padding: 4rem 1rem 2rem;
+            }
+
+            .content-section {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .stats-section {
+                padding: 2rem 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+        }
+
+        /* Floating particles animation */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.8), transparent);
+            border-radius: 50%;
+            animation: float 12s infinite linear;
+        }
+
+        @keyframes float {
+            0% { 
+                transform: translateY(100vh) translateX(0px) rotate(0deg); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 1; 
+            }
+            90% { 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(-20px) translateX(100px) rotate(360deg); 
+                opacity: 0; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="hamburger" id="hamburger">
+            <div class="astronaut"></div>
+        </div>
+        <div class="logo">PlanetGo</div>
+        <div style="width: 50px;"></div> <!-- Spacer for centering -->
+    </header>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Navigation</h2>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="#" class="active">🏠 Home</a></li>
+            <li><a href="#">👥 Group Page</a></li>
+            <li><a href="#">🏆 At home</a></li>
+            <li><a href="#">📚 Tutorings</a></li>
+            <li><a href="#">🎯 Seasons</a></li>
+            <li><a href="#">🔗 Go Resources</a></li>
+            <li><a href="#">📊 MyStats</a></li>
+        </ul>
+    </nav>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="container">
+            <section class="welcome-section">
+                <h1 class="welcome-title">Welcome to PlanetGo</h1>
+                <p class="welcome-subtitle">Where strategy meets innovation in the ultimate Go experience</p>
+            </section>
+
+            <section class="content-section">
+                <a href="#" class="content-card">
+                    <h3>👥 Group Page</h3>
+                    <p><!-- AUTHOR WRITES HERE --> Join our vibrant Go community groups where players gather to discuss strategies, organize games, and share their passion. Create study groups, participate in group challenges, and connect with players of your skill level.</p>
+                </a>
+                <a href="#" class="content-card">
+                    <h3>🎯 Seasons</h3>
+                    <p><!-- AUTHOR WRITES HERE --> Join our exciting Go tournaments! Participate in regular competitions, test your skills against players of all levels, and climb the leaderboards. Earn prizes, gain recognition, and experience the thrill of competitive play in a friendly community environment.</p>
+                </a>
+                <a href="#" class="content-card">
+                    <h3>📚 Tutorings</h3>
+                    <p><!-- AUTHOR WRITES HERE --> Learn from experienced players through personalized tutoring sessions. Book one-on-one lessons, join group workshops, or become a tutor yourself to help others improve their game.</p>
+                </a>
+                <a href="#" class="content-card">
+                    <h3>🔗 Go Resources</h3>
+                    <p><!-- AUTHOR WRITES HERE --> Access our comprehensive collection of Go learning materials, including professional game reviews, puzzle collections, opening theory, and links to essential Go books and websites.</p>
+                </a>
+                <div class="content-card" id="mystats-card">
+                    <h3>📊 MyStats</h3>
+                    <form id="mystats-form" style="margin-bottom: 1rem;">
+                        <input type="text" id="mystats-username" placeholder="Enter OGS Username" style="padding:0.5rem 1rem; border-radius:20px; border:1px solid #00d4ff; outline:none; margin-right:0.5rem;" required />
+                        <button type="submit" style="padding:0.5rem 1.5rem; border-radius:20px; background:#00d4ff; color:#fff; border:none; font-weight:600; cursor:pointer;">Get Stats</button>
+                    </form>
+                    <div id="mystats-result">
+                        <p>Track your progress with detailed statistics and analytics. View your game history, rating progression, win rates, and performance insights to identify areas for improvement.</p>
+                    </div>
+                </div>
+                <a href="#" class="content-card">
+                    <h3>🏆 At home</h3>
+                    <p><!-- AUTHOR WRITES HERE --> Enjoy Go from the comfort of your home! Participate in online matches, join virtual meetups, and access home-based challenges designed to help you practice and improve at your own pace.</p>
+                </a>
+                <a href="#" class="content-card">
+                    <h3>🏆 Tournaments</h3>
+                    <p><!-- AUTHOR WRITES HERE --> Join our exciting Go tournaments! Participate in regular competitions, test your skills against players of all levels, and climb the leaderboards. Earn prizes, gain recognition, and experience the thrill of competitive play in a friendly community environment.</p>
+                </a>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // MyStats fetch logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('mystats-form');
+            if (!form) return;
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const username = document.getElementById('mystats-username').value.trim();
+                const resultDiv = document.getElementById('mystats-result');
+                if (!username) {
+                    resultDiv.innerHTML = '<p style="color:#f00;">Please enter a username.</p>';
+                    return;
+                }
+                resultDiv.innerHTML = '<p>Loading...</p>';
+                try {
+                    const res = await fetch(`https://planet-go-back-end.vercel.app/api/stats?username=${encodeURIComponent(username)}`);
+                    if (!res.ok) throw new Error('Failed to fetch stats');
+                    const data = await res.json();
+                    if (!data || !data.results || !Array.isArray(data.results)) {
+                        resultDiv.innerHTML = '<p>No stats found for this user.</p>';
+                        return;
+                    }
+                    const totalGames = data.results.length;
+                    let wins = 0, losses = 0;
+                    data.results.forEach(game => {
+                        if (game.outcome === 'win') wins++;
+                        else if (game.outcome === 'loss') losses++;
+                    });
+                    resultDiv.innerHTML = `<p><strong>Total Games:</strong> ${totalGames}<br><strong>Wins:</strong> ${wins}<br><strong>Losses:</strong> ${losses}</p>`;
+                } catch (err) {
+                    resultDiv.innerHTML = `<p style='color:#f00;'>Error: ${err.message}</p>`;
+                }
+            });
+        });
+        // Sidebar functionality
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const header = document.getElementById('header');
+        const mainContent = document.getElementById('mainContent');
+
+        let sidebarOpen = false;
+
+        function toggleSidebar() {
+            sidebarOpen = !sidebarOpen;
+            
+            if (sidebarOpen) {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                hamburger.classList.add('active');
+                header.classList.add('sidebar-open');
+                mainContent.classList.add('sidebar-open');
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                hamburger.classList.remove('active');
+                header.classList.remove('sidebar-open');
+                mainContent.classList.remove('sidebar-open');
+            }
+        }
+
+        hamburger.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // Close sidebar on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebarOpen) {
+                toggleSidebar();
+            }
+        });
+
+        // Particle system
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 12;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 12 + 's';
+                particle.style.animationDuration = (Math.random() * 6 + 8) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize particles on load
+        window.addEventListener('load', createParticles);
+
+        // Add smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+</body>
+</html>
