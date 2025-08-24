@@ -262,13 +262,34 @@
     <div class="particles" id="particles"></div>
 
     <!-- Header -->
-    <header class="header">
+    <header class="header" id="header">
+        <div class="hamburger" id="hamburger">
+            <div class="astronaut"></div>
+        </div>
         <div class="logo">PlanetGo</div>
-        <div style="width: 120px;"></div> <!-- Spacer for centering -->
+        <div style="width: 50px;"></div>
     </header>
 
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Navigation</h2>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="home.html">🏠 Home</a></li>
+            <li><a href="group.html" class="active">👥 Group Page</a></li>
+            <li><a href="tournaments.html">🏆 Tournaments</a></li>
+            <li><a href="tutor.html">📚 Tutorings</a></li>
+            <li><a href="seasons.html">🎯 Seasons</a></li>
+            <li><a href="goresources.html">🔗 Go Resources</a></li>
+            <li><a href="mystats.html">📊 MyStats</a></li>
+        </ul>
+    </nav>
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
     <!-- Main Content -->
-    <main class="main-content">
+    <main class="main-content" id="mainContent">
         <div class="container">
             <div class="page-header">
                 <h1 class="page-title">Join Our Community</h1>
@@ -277,7 +298,7 @@
 
             <div class="content-card">
                 <h3>👥 About Our Group</h3>
-                <p><!-- AUTHOR WRITES HERE --> Join our vibrant Go community groups where players gather to discuss strategies, organize games, and share their passion. Create study groups, participate in group challenges, and connect with players of your skill level.</p>
+                <p>Join our vibrant Go community groups where players gather to discuss strategies, organize games, and share their passion. Create study groups, participate in group challenges, and connect with players of your skill level.</p>
 
                 <h3 style="margin-top: 2rem;">Why Become a Member?</h3>
                 <ul class="benefits-list">
@@ -297,6 +318,39 @@
             </div>
         </div>
     </main>
+
+    <script>
+        // Sidebar functionality (same as home.html)
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const header = document.getElementById('header');
+        const mainContent = document.getElementById('mainContent');
+        let sidebarOpen = false;
+        function toggleSidebar() {
+            sidebarOpen = !sidebarOpen;
+            if (sidebarOpen) {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                hamburger.classList.add('active');
+                header.classList.add('sidebar-open');
+                mainContent.classList.add('sidebar-open');
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                hamburger.classList.remove('active');
+                header.classList.remove('sidebar-open');
+                mainContent.classList.remove('sidebar-open');
+            }
+        }
+        hamburger.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebarOpen) {
+                toggleSidebar();
+            }
+        });
+    </script>
 
     <script>
         // Particle system
