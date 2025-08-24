@@ -1,4 +1,4 @@
-<li><a href="#">📊 MyStats</a></li><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -494,78 +494,40 @@
             </section>
 
             <section class="content-section">
-                <a href="#" class="content-card">
+                <a href="https://group.planetgoclub.com" class="content-card">
                     <h3>👥 Group Page</h3>
-                    <p><!-- AUTHOR WRITES HERE --> Join our vibrant Go community groups where players gather to discuss strategies, organize games, and share their passion. Create study groups, participate in group challenges, and connect with players of your skill level.</p>
+                    <p>Join our vibrant Go community groups where players gather to discuss strategies, organize games, and share their passion. Create study groups, participate in group challenges, and connect with players of your skill level.</p>
                 </a>
-                <a href="#" class="content-card">
+                <a href="https://seasons.planetgoclub.com" class="content-card">
                     <h3>🎯 Seasons</h3>
-                    <p><!-- AUTHOR WRITES HERE --> Join our exciting Go tournaments! Participate in regular competitions, test your skills against players of all levels, and climb the leaderboards. Earn prizes, gain recognition, and experience the thrill of competitive play in a friendly community environment.</p>
+                    <p>Join our exciting Go tournaments! Participate in regular competitions, test your skills against players of all levels, and climb the leaderboards. Earn prizes, gain recognition, and experience the thrill of competitive play in a friendly community environment.</p>
                 </a>
-                <a href="#" class="content-card">
+                <a href="https://tutorings.planetgoclub.com" class="content-card">
                     <h3>📚 Tutorings</h3>
-                    <p><!-- AUTHOR WRITES HERE --> Learn from experienced players through personalized tutoring sessions. Book one-on-one lessons, join group workshops, or become a tutor yourself to help others improve their game.</p>
+                    <p>Learn from experienced players through personalized tutoring sessions. Book one-on-one lessons, join group workshops, or become a tutor yourself to help others improve their game.</p>
                 </a>
-                <a href="#" class="content-card">
+                <a href="https://goresources.planetgoclub.com" class="content-card">
                     <h3>🔗 Go Resources</h3>
-                    <p><!-- AUTHOR WRITES HERE --> Access our comprehensive collection of Go learning materials, including professional game reviews, puzzle collections, opening theory, and links to essential Go books and websites.</p>
+                    <p>Access our comprehensive collection of Go learning materials, including professional game reviews, puzzle collections, opening theory, and links to essential Go books and websites.</p>
                 </a>
-                <div class="content-card" id="mystats-card">
-                    <h3>📊 MyStats</h3>
-                    <form id="mystats-form" style="margin-bottom: 1rem;">
-                        <input type="text" id="mystats-username" placeholder="Enter OGS Username" style="padding:0.5rem 1rem; border-radius:20px; border:1px solid #00d4ff; outline:none; margin-right:0.5rem;" required />
-                        <button type="submit" style="padding:0.5rem 1.5rem; border-radius:20px; background:#00d4ff; color:#fff; border:none; font-weight:600; cursor:pointer;">Get Stats</button>
-                    </form>
-                    <div id="mystats-result">
-                        <p>Track your progress with detailed statistics and analytics. View your game history, rating progression, win rates, and performance insights to identify areas for improvement.</p>
-                    </div>
-                </div>
-                <a href="#" class="content-card">
+                <a href="https://mystats.planetgoclub.com" class="content-card">
+                    <h3>📈 MyStats</h3>
+                    <p>Track your progress with detailed statistics and analytics. View your game history, rating progression, win rates, and performance insights to identify areas for improvement.</p>
+                </a>
+                <a href="/athome.html" class="content-card">
                     <h3>🏆 At home</h3>
-                    <p><!-- AUTHOR WRITES HERE --> Enjoy Go from the comfort of your home! Participate in online matches, join virtual meetups, and access home-based challenges designed to help you practice and improve at your own pace.</p>
+                    <p>Enjoy Go from the comfort of your home! Participate in online matches, join virtual meetups, and access home-based challenges designed to help you practice and improve at your own pace.</p>
                 </a>
-                <a href="#" class="content-card">
+                <a href="https://tournaments.planetgoclub.com" class="content-card">
                     <h3>🏆 Tournaments</h3>
-                    <p><!-- AUTHOR WRITES HERE --> Join our exciting Go tournaments! Participate in regular competitions, test your skills against players of all levels, and climb the leaderboards. Earn prizes, gain recognition, and experience the thrill of competitive play in a friendly community environment.</p>
+                    <p>Join our exciting Go tournaments! Participate in regular competitions, test your skills against players of all levels, and climb the leaderboards. Earn prizes, gain recognition, and experience the thrill of competitive play in a friendly community environment.</p>
                 </a>
             </section>
         </div>
     </main>
 
     <script>
-        // MyStats fetch logic
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('mystats-form');
-            if (!form) return;
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const username = document.getElementById('mystats-username').value.trim();
-                const resultDiv = document.getElementById('mystats-result');
-                if (!username) {
-                    resultDiv.innerHTML = '<p style="color:#f00;">Please enter a username.</p>';
-                    return;
-                }
-                resultDiv.innerHTML = '<p>Loading...</p>';
-                try {
-                    const res = await fetch(`https://planet-go-back-end.vercel.app/api/stats?username=${encodeURIComponent(username)}`);
-                    if (!res.ok) throw new Error('Failed to fetch stats');
-                    const data = await res.json();
-                    if (!data || !data.results || !Array.isArray(data.results)) {
-                        resultDiv.innerHTML = '<p>No stats found for this user.</p>';
-                        return;
-                    }
-                    const totalGames = data.results.length;
-                    let wins = 0, losses = 0;
-                    data.results.forEach(game => {
-                        if (game.outcome === 'win') wins++;
-                        else if (game.outcome === 'loss') losses++;
-                    });
-                    resultDiv.innerHTML = `<p><strong>Total Games:</strong> ${totalGames}<br><strong>Wins:</strong> ${wins}<br><strong>Losses:</strong> ${losses}</p>`;
-                } catch (err) {
-                    resultDiv.innerHTML = `<p style='color:#f00;'>Error: ${err.message}</p>`;
-                }
-            });
-        });
+        // ...existing code...
         // Sidebar functionality
         const hamburger = document.getElementById('hamburger');
         const sidebar = document.getElementById('sidebar');
