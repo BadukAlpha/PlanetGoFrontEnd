@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seasons - PlanetGo</title>
+    <link rel="stylesheet" href="home.css">
+    <style>
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; }
+        .main-content { margin-left: 0; margin-top: 100px; padding: 0 2rem 2rem; }
+        .season-description { max-width: 700px; margin: 3rem auto; background: rgba(20,20,20,0.8); border-radius: 18px; padding: 2.5rem; box-shadow: 0 4px 32px rgba(0,212,255,0.08); }
+        h1, h2 { text-align: center; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="hamburger" id="hamburger">
+            <div class="astronaut"></div>
+        </div>
+        <div class="logo">PlanetGo</div>
+        <div style="width: 50px;"></div>
+    </header>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Navigation</h2>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="home.html">🏠 Home</a></li>
+            <li><a href="group.html">👥 Group Page</a></li>
+            <li><a href="tournaments.html">🏆 Tournaments</a></li>
+            <li><a href="tutor.html">📚 Tutorings</a></li>
+            <li><a href="seasons.html" class="active">🎯 Seasons</a></li>
+            <li><a href="goresources.html">🔗 Go Resources</a></li>
+            <li><a href="mystats.html">📊 MyStats</a></li>
+        </ul>
+    </nav>
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <h1>🎯 Go Season Format</h1>
+        <div class="season-description">
+            <h2>How the Season Works</h2>
+            <p>
+                Each Go season is structured like a professional sports league. All registered players are divided into pools, where they compete in a round-robin format. After pool play, the top 64 participants with the best records advance to a single elimination bracket. The winner of the bracket is crowned the season champion.
+            </p>
+            <ul style="margin-top:2rem;">
+                <li><b>Pool Play:</b> Players are split into pools and play against every other player in their pool.</li>
+                <li><b>Advancement:</b> The top 64 players overall move on to the next stage.</li>
+                <li><b>Single Elimination:</b> The final 64 compete in a knockout bracket until only one champion remains.</li>
+            </ul>
+        </div>
+    </main>
+    <script>
+        // Sidebar functionality (same as home.html)
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const header = document.getElementById('header');
+        const mainContent = document.getElementById('mainContent');
+        let sidebarOpen = false;
+        function toggleSidebar() {
+            sidebarOpen = !sidebarOpen;
+            if (sidebarOpen) {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                hamburger.classList.add('active');
+                header.classList.add('sidebar-open');
+                mainContent.classList.add('sidebar-open');
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                hamburger.classList.remove('active');
+                header.classList.remove('sidebar-open');
+                mainContent.classList.remove('sidebar-open');
+            }
+        }
+        hamburger.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebarOpen) {
+                toggleSidebar();
+            }
+        });
+    </script>
+</body>
+</html>
