@@ -89,174 +89,327 @@
 
             <!-- Stats Results -->
             <div id="statsContainer" class="stats-results" style="display: none;">
-                <!-- Player Info Header -->
-                <div id="playerInfo" class="player-info"></div>
-                
-                <!-- Comprehensive Game Statistics -->
-                <div class="comprehensive-stats">
-                    <div class="stats-grid">
-                        <!-- Overall Stats -->
-                        <div class="stat-card overall-stats">
-                            <h3>🎯 Overall Statistics</h3>
-                            <div class="stat-row">
-                                <span class="stat-label">Total Games:</span>
-                                <span class="stat-value" id="totalGames">-</span>
+                <!-- Player Header Section -->
+                <div class="player-header">
+                    <div class="player-avatar">
+                        <img id="playerAvatar" src="" alt="Player Avatar" class="avatar-image">
+                    </div>
+                    <div class="player-details">
+                        <h1 id="playerName" class="player-name">-</h1>
+                        <div class="player-meta">
+                            <span class="player-rank" id="playerRank">-</span>
+                            <span class="player-country" id="playerCountry">-</span>
+                        </div>
+                        <div class="player-rating" id="playerRating">-</div>
+                    </div>
+                    <div class="player-controls">
+                        <select id="maxGames" class="games-selector">
+                            <option value="100">Last 100 games</option>
+                            <option value="500">Last 500 games</option>
+                            <option value="1000">Last 1000 games</option>
+                            <option value="2000">Last 2000 games</option>
+                            <option value="5000">Last 5000 games</option>
+                        </select>
+                        <button id="refreshGames" class="refresh-btn">🔄</button>
+                        <button id="exportData" class="export-btn">📥 Export</button>
+                        <input type="file" id="importData" accept=".json" style="display: none;">
+                        <button id="importBtn" class="import-btn">📤 Import</button>
+                    </div>
+                </div>
+
+                <!-- Main Stats Grid -->
+                <div class="main-stats-grid">
+                    <!-- General Statistics -->
+                    <div class="stats-section">
+                        <h2 class="section-title">📊 General Statistics</h2>
+                        <div class="stats-cards">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalGames">-</div>
+                                <div class="stat-label">Total Games</div>
                             </div>
-                            <div class="stat-row">
-                                <span class="stat-label">Wins:</span>
-                                <span class="stat-value win" id="totalWins">-</span>
+                            <div class="stat-card">
+                                <div class="stat-number win-color" id="totalWins">-</div>
+                                <div class="stat-label">Wins</div>
                             </div>
-                            <div class="stat-row">
-                                <span class="stat-label">Losses:</span>
-                                <span class="stat-value loss" id="totalLosses">-</span>
+                            <div class="stat-card">
+                                <div class="stat-number loss-color" id="totalLosses">-</div>
+                                <div class="stat-label">Losses</div>
                             </div>
-                            <div class="stat-row">
-                                <span class="stat-label">Win Rate:</span>
-                                <span class="stat-value" id="winRate">-</span>
+                            <div class="stat-card">
+                                <div class="stat-number" id="winRate">-</div>
+                                <div class="stat-label">Win Rate</div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Color Statistics -->
-                        <div class="stat-card color-stats">
-                            <h3>⚫⚪ Color Statistics</h3>
-                            <div class="color-breakdown">
-                                <div class="color-section">
-                                    <h4>As Black</h4>
-                                    <div class="stat-row">
-                                        <span class="stat-label">Games:</span>
+                    <!-- Color Statistics -->
+                    <div class="stats-section">
+                        <h2 class="section-title">⚫⚪ Color Statistics</h2>
+                        <div class="color-stats-grid">
+                            <div class="color-stat-group">
+                                <h3 class="color-title">As Black</h3>
+                                <div class="color-stats">
+                                    <div class="color-stat">
                                         <span class="stat-value" id="blackGames">-</span>
+                                        <span class="stat-name">Games</span>
                                     </div>
-                                    <div class="stat-row">
-                                        <span class="stat-label">Wins:</span>
-                                        <span class="stat-value win" id="blackWins">-</span>
+                                    <div class="color-stat">
+                                        <span class="stat-value win-color" id="blackWins">-</span>
+                                        <span class="stat-name">Wins</span>
                                     </div>
-                                    <div class="stat-row">
-                                        <span class="stat-label">Win Rate:</span>
+                                    <div class="color-stat">
                                         <span class="stat-value" id="blackWinRate">-</span>
+                                        <span class="stat-name">Win Rate</span>
                                     </div>
                                 </div>
-                                <div class="color-section">
-                                    <h4>As White</h4>
-                                    <div class="stat-row">
-                                        <span class="stat-label">Games:</span>
+                            </div>
+                            <div class="color-stat-group">
+                                <h3 class="color-title">As White</h3>
+                                <div class="color-stats">
+                                    <div class="color-stat">
                                         <span class="stat-value" id="whiteGames">-</span>
+                                        <span class="stat-name">Games</span>
                                     </div>
-                                    <div class="stat-row">
-                                        <span class="stat-label">Wins:</span>
-                                        <span class="stat-value win" id="whiteWins">-</span>
+                                    <div class="color-stat">
+                                        <span class="stat-value win-color" id="whiteWins">-</span>
+                                        <span class="stat-name">Wins</span>
                                     </div>
-                                    <div class="stat-row">
-                                        <span class="stat-label">Win Rate:</span>
+                                    <div class="color-stat">
                                         <span class="stat-value" id="whiteWinRate">-</span>
+                                        <span class="stat-name">Win Rate</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Game Type Statistics -->
-                        <div class="stat-card game-type-stats">
-                            <h3>🏆 Game Type Breakdown</h3>
-                            <div class="stat-row">
-                                <span class="stat-label">Ranked Games:</span>
-                                <span class="stat-value" id="rankedGames">-</span>
-                            </div>
-                            <div class="stat-row">
-                                <span class="stat-label">Ranked Wins:</span>
-                                <span class="stat-value win" id="rankedWins">-</span>
-                            </div>
-                            <div class="stat-row">
-                                <span class="stat-label">Ranked Win Rate:</span>
-                                <span class="stat-value" id="rankedWinRate">-</span>
-                            </div>
-                            <div class="stat-row">
-                                <span class="stat-label">Unranked Games:</span>
-                                <span class="stat-value" id="unrankedGames">-</span>
-                            </div>
+                    <!-- Board Size Statistics -->
+                    <div class="stats-section">
+                        <h2 class="section-title">📐 Board Size Statistics</h2>
+                        <div class="board-size-stats" id="boardSizeStats">
+                            <!-- Will be populated dynamically -->
                         </div>
+                    </div>
 
-                        <!-- Board Size Statistics -->
-                        <div class="stat-card board-size-stats">
-                            <h3>📐 Board Size Statistics</h3>
-                            <div id="boardSizeBreakdown">
-                                <!-- Will be populated dynamically -->
+                    <!-- Ranked vs Unranked -->
+                    <div class="stats-section">
+                        <h2 class="section-title">🏆 Ranked vs Unranked</h2>
+                        <div class="ranked-stats-grid">
+                            <div class="ranked-group">
+                                <h3 class="ranked-title">Ranked Games</h3>
+                                <div class="ranked-stats">
+                                    <div class="ranked-stat">
+                                        <span class="stat-value" id="rankedGames">-</span>
+                                        <span class="stat-name">Games</span>
+                                    </div>
+                                    <div class="ranked-stat">
+                                        <span class="stat-value win-color" id="rankedWins">-</span>
+                                        <span class="stat-name">Wins</span>
+                                    </div>
+                                    <div class="ranked-stat">
+                                        <span class="stat-value" id="rankedWinRate">-</span>
+                                        <span class="stat-name">Win Rate</span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Opponent Strength Analysis -->
-                        <div class="stat-card opponent-stats">
-                            <h3>👥 Opponent Analysis</h3>
-                            <div class="stat-row">
-                                <span class="stat-label">vs Stronger Players:</span>
-                                <span class="stat-value" id="vsStronger">-</span>
-                            </div>
-                            <div class="stat-row">
-                                <span class="stat-label">vs Equal Players:</span>
-                                <span class="stat-value" id="vsEqual">-</span>
-                            </div>
-                            <div class="stat-row">
-                                <span class="stat-label">vs Weaker Players:</span>
-                                <span class="stat-value" id="vsWeaker">-</span>
-                            </div>
-                        </div>
-
-                        <!-- Time Control Statistics -->
-                        <div class="stat-card time-stats">
-                            <h3>⏱️ Time Control Breakdown</h3>
-                            <div id="timeControlBreakdown">
-                                <!-- Will be populated dynamically -->
+                            <div class="ranked-group">
+                                <h3 class="ranked-title">Unranked Games</h3>
+                                <div class="ranked-stats">
+                                    <div class="ranked-stat">
+                                        <span class="stat-value" id="unrankedGames">-</span>
+                                        <span class="stat-name">Games</span>
+                                    </div>
+                                    <div class="ranked-stat">
+                                        <span class="stat-value win-color" id="unrankedWins">-</span>
+                                        <span class="stat-name">Wins</span>
+                                    </div>
+                                    <div class="ranked-stat">
+                                        <span class="stat-value" id="unrankedWinRate">-</span>
+                                        <span class="stat-name">Win Rate</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Controls -->
-                <div class="stats-controls">
-                    <div class="control-group">
-                        <label for="gamesPerPage">Games per page:</label>
-                        <select id="gamesPerPage" class="control-select black-select">
-                            <option value="10" selected>10</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                        </select>
+
+                    <!-- Time Control Statistics -->
+                    <div class="stats-section">
+                        <h2 class="section-title">⏱️ Time Control Statistics</h2>
+                        <div class="time-control-stats" id="timeControlStats">
+                            <!-- Will be populated dynamically -->
+                        </div>
                     </div>
-                    
-                    <div class="control-group">
-                        <label for="maxGames">Max games to load:</label>
-                        <select id="maxGames" class="control-select black-select">
-                            <option value="20" selected>20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="500">500</option>
-                            <option value="1000">1000</option>
-                            <option value="5000">5000</option>
-                        </select>
+
+                    <!-- Opponent Strength Analysis -->
+                    <div class="stats-section">
+                        <h2 class="section-title">👥 Opponent Strength Analysis</h2>
+                        <div class="opponent-stats-grid">
+                            <div class="opponent-stat">
+                                <div class="opponent-icon">💪</div>
+                                <div class="opponent-data">
+                                    <div class="opponent-count" id="vsStronger">-</div>
+                                    <div class="opponent-label">vs Stronger</div>
+                                </div>
+                            </div>
+                            <div class="opponent-stat">
+                                <div class="opponent-icon">⚖️</div>
+                                <div class="opponent-data">
+                                    <div class="opponent-count" id="vsEqual">-</div>
+                                    <div class="opponent-label">vs Equal</div>
+                                </div>
+                            </div>
+                            <div class="opponent-stat">
+                                <div class="opponent-icon">🎯</div>
+                                <div class="opponent-data">
+                                    <div class="opponent-count" id="vsWeaker">-</div>
+                                    <div class="opponent-label">vs Weaker</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <button id="refreshGames" class="refresh-button">🔄 Refresh Games</button>
+
+                    <!-- Game Outcome Analysis (gotstats feature) -->
+                    <div class="stats-section">
+                        <h2 class="section-title">🎯 Game Outcome Analysis</h2>
+                        <div class="outcome-stats-grid">
+                            <div class="outcome-stat">
+                                <div class="outcome-label">Resignation</div>
+                                <div class="outcome-values">
+                                    <span class="outcome-won" id="resignationWon">-</span>
+                                    <span class="outcome-lost" id="resignationLost">-</span>
+                                </div>
+                            </div>
+                            <div class="outcome-stat">
+                                <div class="outcome-label">Timeout</div>
+                                <div class="outcome-values">
+                                    <span class="outcome-won" id="timeoutWon">-</span>
+                                    <span class="outcome-lost" id="timeoutLost">-</span>
+                                </div>
+                            </div>
+                            <div class="outcome-stat">
+                                <div class="outcome-label">Score</div>
+                                <div class="outcome-values">
+                                    <span class="outcome-won" id="scoreWon">-</span>
+                                    <span class="outcome-lost" id="scoreLost">-</span>
+                                </div>
+                            </div>
+                            <div class="outcome-stat">
+                                <div class="outcome-label">Disconnection</div>
+                                <div class="outcome-values">
+                                    <span class="outcome-won" id="disconnectionWon">-</span>
+                                    <span class="outcome-lost" id="disconnectionLost">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time Period Analysis (gotstats feature) -->
+                    <div class="stats-section">
+                        <h2 class="section-title">📅 Time Period Analysis</h2>
+                        <div class="time-period-controls">
+                            <label for="timePeriod">Filter by period:</label>
+                            <select id="timePeriod" class="control-select">
+                                <option value="all">All time</option>
+                                <option value="7">Last 7 days</option>
+                                <option value="30">Last 30 days</option>
+                                <option value="90">Last 3 months</option>
+                                <option value="365">Last year</option>
+                            </select>
+                        </div>
+                        <div class="period-stats">
+                            <div class="period-stat">
+                                <div class="period-label">Games in Period</div>
+                                <div class="period-value" id="periodGames">-</div>
+                            </div>
+                            <div class="period-stat">
+                                <div class="period-label">Win Rate</div>
+                                <div class="period-value" id="periodWinRate">-</div>
+                            </div>
+                            <div class="period-stat">
+                                <div class="period-label">Avg. Game Length</div>
+                                <div class="period-value" id="avgGameLength">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rank Progression (gotstats feature) -->
+                    <div class="stats-section">
+                        <h2 class="section-title">📈 Rank Progression</h2>
+                        <div class="rank-progression">
+                            <div class="rank-chart-container">
+                                <canvas id="rankChart" width="400" height="200"></canvas>
+                            </div>
+                            <div class="rank-stats">
+                                <div class="rank-stat">
+                                    <div class="rank-label">Highest Rank</div>
+                                    <div class="rank-value" id="highestRank">-</div>
+                                </div>
+                                <div class="rank-stat">
+                                    <div class="rank-label">Lowest Rank</div>
+                                    <div class="rank-value" id="lowestRank">-</div>
+                                </div>
+                                <div class="rank-stat">
+                                    <div class="rank-label">Rank Change</div>
+                                    <div class="rank-value" id="rankChange">-</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Games -->
+                    <div class="stats-section full-width">
+                        <h2 class="section-title">🎮 Game History</h2>
+                        <div class="games-controls">
+                            <div class="games-filters">
+                                <label for="gamesPerPage">Games per page:</label>
+                                <select id="gamesPerPage" class="control-select">
+                                    <option value="10" selected>10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                </select>
+                                
+                                <label for="gameFilter">Filter:</label>
+                                <select id="gameFilter" class="control-select">
+                                    <option value="all">All games</option>
+                                    <option value="wins">Wins only</option>
+                                    <option value="losses">Losses only</option>
+                                    <option value="ranked">Ranked only</option>
+                                    <option value="unranked">Unranked only</option>
+                                </select>
+                                
+                                <label for="boardSizeFilter">Board Size:</label>
+                                <select id="boardSizeFilter" class="control-select">
+                                    <option value="all">All sizes</option>
+                                    <option value="19x19">19×19</option>
+                                    <option value="13x13">13×13</option>
+                                    <option value="9x9">9×9</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="games-table-container">
+                            <table id="gamesTable" class="games-table">
+                                <thead>
+                                    <tr>
+                                        <th>Opponent</th>
+                                        <th>Color</th>
+                                        <th>Result</th>
+                                        <th>Outcome</th>
+                                        <th>Board</th>
+                                        <th>Ranked</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gamesTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="pagination" class="pagination"></div>
+                    </div>
                 </div>
 
-                <!-- Games Table -->
-                <div class="games-table-container">
-                    <table id="gamesTable" class="games-table">
-                        <thead>
-                            <tr>
-                                <th>Opponent</th>
-                                <th>Color</th>
-                                <th>Result</th>
-                                <th>Date</th>
-                                <th>Game Link</th>
-                            </tr>
-                        </thead>
-                        <tbody id="gamesTableBody">
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                <div id="pagination" class="pagination"></div>
-                
                 <!-- Loading indicator -->
-                <div id="loadingGames" class="loading-indicator modern-loading" style="display: none;">
+                <div id="loadingGames" class="modern-loading" style="display: none;">
                     <div class="loading-animation">
                         <div class="cosmic-spinner">
                             <div class="ring ring-1"></div>
@@ -443,20 +596,307 @@
         }
 
         function displayPlayerStats(player) {
-            playerInfo.innerHTML = `
-                <div class="player-header">
-                    <h2>${player.username}</h2>
-                    <div class="player-details">
-                        <span class="rank">${player.ranking || 'Unranked'}</span>
-                        <span class="player-id">ID: ${player.id}</span>
-                    </div>
-                </div>
-            `;
+            // Update player header with OGS API data structure
+            const avatarUrl = player.icon ? 
+                `https://b0c2ddc39d13e1c0ddad-93a52a5bc9e7cc06c9747b365f01328a.ssl.cf1.rackcdn.com/${player.icon}-64.png` :
+                `https://secure.gravatar.com/avatar/${player.id}?s=80&d=retro`;
+            
+            document.getElementById('playerAvatar').src = avatarUrl;
+            document.getElementById('playerName').textContent = player.username || 'Unknown Player';
+            document.getElementById('playerRank').textContent = player.ranking || 'Unranked';
+            document.getElementById('playerCountry').textContent = player.country || 'Unknown';
+            document.getElementById('playerRating').textContent = `Rating: ${player.rating ? Math.round(player.rating) : 'N/A'}`;
             
             statsContainer.style.display = 'block';
             currentPage = 1;
             displayGames();
             setupPagination();
+        }
+
+        function calculateComprehensiveStats() {
+            if (!allGames || allGames.length === 0) return;
+
+            const stats = {
+                total: allGames.length,
+                wins: 0,
+                losses: 0,
+                black: { games: 0, wins: 0 },
+                white: { games: 0, wins: 0 },
+                ranked: { games: 0, wins: 0 },
+                unranked: { games: 0, wins: 0 },
+                boardSizes: {},
+                timeControls: {},
+                opponents: { stronger: 0, equal: 0, weaker: 0 },
+                outcomes: {
+                    resignation: { won: 0, lost: 0 },
+                    timeout: { won: 0, lost: 0 },
+                    score: { won: 0, lost: 0 },
+                    disconnection: { won: 0, lost: 0 }
+                },
+                rankProgression: []
+            };
+
+            // Process games in chronological order for rank progression
+            const sortedGames = [...allGames].sort((a, b) => 
+                new Date(a.ended || a.started) - new Date(b.ended || b.started)
+            );
+
+            sortedGames.forEach((game, index) => {
+                // Determine if player is black or white using the actual OGS data structure
+                const isBlack = game.black === currentPlayer.id || 
+                               (game.players && game.players.black && game.players.black.id === currentPlayer.id) ||
+                               (game.black_player && game.black_player.id === currentPlayer.id);
+                
+                // Determine if player won using OGS game result structure
+                let isWin = false;
+                let outcomeType = 'unknown';
+                
+                if (game.outcome) {
+                    // Parse outcome string (e.g., "B+R", "W+T", "B+0.5", etc.)
+                    if (isBlack) {
+                        isWin = game.outcome.includes('B+');
+                    } else {
+                        isWin = game.outcome.includes('W+');
+                    }
+                    
+                    // Determine outcome type
+                    if (game.outcome.includes('+R')) {
+                        outcomeType = 'resignation';
+                    } else if (game.outcome.includes('+T')) {
+                        outcomeType = 'timeout';
+                    } else if (game.outcome.includes('+F')) {
+                        outcomeType = 'disconnection';
+                    } else if (game.outcome.match(/\+\d/)) {
+                        outcomeType = 'score';
+                    }
+                } else if (typeof game.black_lost !== 'undefined') {
+                    isWin = isBlack ? !game.black_lost : game.black_lost;
+                } else if (typeof game.white_lost !== 'undefined') {
+                    isWin = isBlack ? game.white_lost : !game.white_lost;
+                }
+
+                if (isWin) {
+                    stats.wins++;
+                    if (stats.outcomes[outcomeType]) {
+                        stats.outcomes[outcomeType].won++;
+                    }
+                } else {
+                    stats.losses++;
+                    if (stats.outcomes[outcomeType]) {
+                        stats.outcomes[outcomeType].lost++;
+                    }
+                }
+
+                // Color stats
+                if (isBlack) {
+                    stats.black.games++;
+                    if (isWin) stats.black.wins++;
+                } else {
+                    stats.white.games++;
+                    if (isWin) stats.white.wins++;
+                }
+
+                // Ranked vs Unranked
+                if (game.ranked) {
+                    stats.ranked.games++;
+                    if (isWin) stats.ranked.wins++;
+                } else {
+                    stats.unranked.games++;
+                    if (isWin) stats.unranked.wins++;
+                }
+
+                // Board sizes
+                const size = `${game.width || 19}×${game.height || 19}`;
+                if (!stats.boardSizes[size]) {
+                    stats.boardSizes[size] = { games: 0, wins: 0 };
+                }
+                stats.boardSizes[size].games++;
+                if (isWin) stats.boardSizes[size].wins++;
+
+                // Time controls
+                let timeControl = 'Unknown';
+                if (game.time_control) {
+                    if (typeof game.time_control === 'string') {
+                        timeControl = game.time_control;
+                    } else if (game.time_control.system) {
+                        timeControl = game.time_control.system;
+                    }
+                }
+                if (!stats.timeControls[timeControl]) {
+                    stats.timeControls[timeControl] = { games: 0, wins: 0 };
+                }
+                stats.timeControls[timeControl].games++;
+                if (isWin) stats.timeControls[timeControl].wins++;
+
+                // Opponent strength analysis
+                let opponent = null;
+                if (game.players) {
+                    opponent = isBlack ? game.players.white : game.players.black;
+                } else if (game.black_player && game.white_player) {
+                    opponent = isBlack ? game.white_player : game.black_player;
+                }
+
+                if (opponent && opponent.rating && currentPlayer.rating) {
+                    const playerRating = currentPlayer.rating;
+                    const opponentRating = opponent.rating;
+                    const ratingDiff = opponentRating - playerRating;
+                    
+                    if (ratingDiff > 100) {
+                        stats.opponents.stronger++;
+                    } else if (Math.abs(ratingDiff) <= 100) {
+                        stats.opponents.equal++;
+                    } else {
+                        stats.opponents.weaker++;
+                    }
+                }
+
+                // Rank progression (simplified - would need historical rating data for full implementation)
+                if (game.historical_ratings && (index % 10 === 0)) {
+                    const playerRating = isBlack ? 
+                        game.historical_ratings.black?.rating : 
+                        game.historical_ratings.white?.rating;
+                    if (playerRating) {
+                        stats.rankProgression.push({
+                            game: index + 1,
+                            rating: playerRating,
+                            date: game.ended || game.started
+                        });
+                    }
+                }
+            });
+
+            updateStatsDisplay(stats);
+        }
+
+        function updateStatsDisplay(stats) {
+            // Update general statistics
+            document.getElementById('totalGames').textContent = stats.total;
+            document.getElementById('totalWins').textContent = stats.wins;
+            document.getElementById('totalLosses').textContent = stats.losses;
+            document.getElementById('winRate').textContent = 
+                stats.total > 0 ? `${((stats.wins / stats.total) * 100).toFixed(1)}%` : '0%';
+
+            // Update color statistics
+            document.getElementById('blackGames').textContent = stats.black.games;
+            document.getElementById('blackWins').textContent = stats.black.wins;
+            document.getElementById('blackWinRate').textContent = 
+                stats.black.games > 0 ? `${((stats.black.wins / stats.black.games) * 100).toFixed(1)}%` : '0%';
+
+            document.getElementById('whiteGames').textContent = stats.white.games;
+            document.getElementById('whiteWins').textContent = stats.white.wins;
+            document.getElementById('whiteWinRate').textContent = 
+                stats.white.games > 0 ? `${((stats.white.wins / stats.white.games) * 100).toFixed(1)}%` : '0%';
+
+            // Update ranked/unranked
+            document.getElementById('rankedGames').textContent = stats.ranked.games;
+            document.getElementById('rankedWins').textContent = stats.ranked.wins;
+            document.getElementById('rankedWinRate').textContent = 
+                stats.ranked.games > 0 ? `${((stats.ranked.wins / stats.ranked.games) * 100).toFixed(1)}%` : '0%';
+
+            document.getElementById('unrankedGames').textContent = stats.unranked.games;
+            document.getElementById('unrankedWins').textContent = stats.unranked.wins;
+            document.getElementById('unrankedWinRate').textContent = 
+                stats.unranked.games > 0 ? `${((stats.unranked.wins / stats.unranked.games) * 100).toFixed(1)}%` : '0%';
+
+            // Update opponent strength
+            document.getElementById('vsStronger').textContent = stats.opponents.stronger;
+            document.getElementById('vsEqual').textContent = stats.opponents.equal;
+            document.getElementById('vsWeaker').textContent = stats.opponents.weaker;
+
+            // Update outcome analysis (gotstats feature)
+            document.getElementById('resignationWon').textContent = stats.outcomes.resignation.won;
+            document.getElementById('resignationLost').textContent = stats.outcomes.resignation.lost;
+            document.getElementById('timeoutWon').textContent = stats.outcomes.timeout.won;
+            document.getElementById('timeoutLost').textContent = stats.outcomes.timeout.lost;
+            document.getElementById('scoreWon').textContent = stats.outcomes.score.won;
+            document.getElementById('scoreLost').textContent = stats.outcomes.score.lost;
+            document.getElementById('disconnectionWon').textContent = stats.outcomes.disconnection.won;
+            document.getElementById('disconnectionLost').textContent = stats.outcomes.disconnection.lost;
+
+            // Update rank progression (simplified)
+            if (stats.rankProgression.length > 0) {
+                const firstRank = stats.rankProgression[0].rating;
+                const lastRank = stats.rankProgression[stats.rankProgression.length - 1].rating;
+                const change = lastRank - firstRank;
+                
+                document.getElementById('highestRank').textContent = Math.max(...stats.rankProgression.map(r => r.rating)).toFixed(0);
+                document.getElementById('lowestRank').textContent = Math.min(...stats.rankProgression.map(r => r.rating)).toFixed(0);
+                document.getElementById('rankChange').textContent = change > 0 ? `+${change.toFixed(0)}` : change.toFixed(0);
+            }
+
+            // Update board size breakdown
+            updateBoardSizeStats(stats.boardSizes);
+            updateTimeControlStats(stats.timeControls);
+            updateTimePeriodStats();
+        }
+
+        function updateBoardSizeStats(boardSizes) {
+            const container = document.getElementById('boardSizeStats');
+            container.innerHTML = '';
+
+            Object.entries(boardSizes)
+                .sort((a, b) => b[1].games - a[1].games)
+                .forEach(([size, data]) => {
+                    const winRate = data.games > 0 ? ((data.wins / data.games) * 100).toFixed(1) : '0';
+                    
+                    const statDiv = document.createElement('div');
+                    statDiv.className = 'size-stat';
+                    statDiv.innerHTML = `
+                        <div class="size-label">${size}</div>
+                        <div class="size-value">${data.games}</div>
+                        <div class="size-label">${winRate}% WR</div>
+                    `;
+                    container.appendChild(statDiv);
+                });
+        }
+
+        function updateTimeControlStats(timeControls) {
+            const container = document.getElementById('timeControlStats');
+            container.innerHTML = '';
+
+            Object.entries(timeControls)
+                .sort((a, b) => b[1].games - a[1].games)
+                .forEach(([control, data]) => {
+                    const winRate = data.games > 0 ? ((data.wins / data.games) * 100).toFixed(1) : '0';
+                    
+                    const statDiv = document.createElement('div');
+                    statDiv.className = 'time-stat';
+                    statDiv.innerHTML = `
+                        <div class="time-label">${control}</div>
+                        <div class="time-value">${data.games}</div>
+                        <div class="time-label">${winRate}% WR</div>
+                    `;
+                    container.appendChild(statDiv);
+                });
+        }
+
+        // Initialize filtered games array
+        let filteredGames = [];
+
+        function applyFiltersAndDisplay() {
+            // For now, just use the existing display logic
+            // Full filtering implementation would go here
+            displayGames();
+            setupPagination();
+        }
+
+        function updateTimePeriodStats() {
+            // Basic implementation - would need more sophisticated time period analysis
+            if (allGames) {
+                document.getElementById('periodGames').textContent = allGames.length;
+                const wins = allGames.filter(game => {
+                    const isBlack = game.black === currentPlayer.id || 
+                                   (game.players && game.players.black && game.players.black.id === currentPlayer.id) ||
+                                   (game.black_player && game.black_player.id === currentPlayer.id);
+                    if (game.outcome) {
+                        return isBlack ? game.outcome.includes('B+') : game.outcome.includes('W+');
+                    }
+                    return false;
+                }).length;
+                const winRate = allGames.length > 0 ? ((wins / allGames.length) * 100).toFixed(1) : '0';
+                document.getElementById('periodWinRate').textContent = `${winRate}%`;
+            }
+            document.getElementById('avgGameLength').textContent = 'N/A';
         }
 
         async function loadGames() {
@@ -500,162 +940,89 @@
             gamesPerPage = parseInt(gamesPerPageSelect.value);
             const start = (currentPage - 1) * gamesPerPage;
             const end = start + gamesPerPage;
-            const pagingatedGames = allGames.slice(start, end);
+            const paginatedGames = allGames.slice(start, end);
             
             gamesTableBody.innerHTML = '';
             
-            pagingatedGames.forEach(game => {
+            paginatedGames.forEach(game => {
                 const row = document.createElement('tr');
                 
-                // Determine player color and opponent
-                const isBlack = game.players.black.id === currentPlayer.id;
-                const opponent = isBlack ? game.players.white : game.players.black;
+                // Determine player color and opponent using actual OGS data structure
+                const isBlack = game.black === currentPlayer.id || 
+                               (game.players && game.players.black && game.players.black.id === currentPlayer.id) ||
+                               (game.black_player && game.black_player.id === currentPlayer.id);
+                
+                let opponent = null;
+                if (game.players) {
+                    opponent = isBlack ? game.players.white : game.players.black;
+                } else if (game.black_player && game.white_player) {
+                    opponent = isBlack ? game.white_player : game.black_player;
+                } else {
+                    // Fallback for other data structures
+                    opponent = { username: 'Unknown', ranking: 'Unknown' };
+                }
+                
                 const playerColor = isBlack ? 'Black' : 'White';
                 
                 // Determine result - only show W or L
                 let result = '-';
+                let resultClass = '';
                 if (game.ended) {
-                    const winner = game.black_lost ? 'white' : 'black';
-                    const playerWon = (isBlack && winner === 'black') || (!isBlack && winner === 'white');
+                    let playerWon = false;
+                    
+                    if (game.outcome) {
+                        // Check outcome string (e.g., "B+R", "W+T", etc.)
+                        if (isBlack) {
+                            playerWon = game.outcome.includes('B+');
+                        } else {
+                            playerWon = game.outcome.includes('W+');
+                        }
+                    } else if (typeof game.black_lost !== 'undefined') {
+                        playerWon = isBlack ? !game.black_lost : game.black_lost;
+                    } else if (typeof game.white_lost !== 'undefined') {
+                        playerWon = isBlack ? game.white_lost : !game.white_lost;
+                    }
+                    
                     result = playerWon ? 'W' : 'L';
+                    resultClass = playerWon ? 'result-win' : 'result-loss';
                 }
                 
                 // Format date
-                const date = new Date(game.ended || game.started).toLocaleDateString();
+                const gameDate = game.ended || game.started || game.created;
+                const date = gameDate ? new Date(gameDate).toLocaleDateString() : 'Unknown';
+                
+                // Board size
+                const boardSize = `${game.width || 19}×${game.height || 19}`;
+                
+                // Format opponent name and rank
+                const opponentName = opponent?.username || 'Unknown';
+                let opponentRank = 'Unranked';
+                if (opponent?.ranking) {
+                    opponentRank = typeof opponent.ranking === 'number' ? 
+                        `${Math.round(opponent.ranking)}k` : opponent.ranking;
+                }
                 
                 row.innerHTML = `
-                    <td class="opponent-cell">
-                        <span class="opponent-name">${opponent.username}</span>
-                        <span class="opponent-rank">${opponent.ranking ? Math.round(opponent.ranking) + 'k' : 'Unranked'}</span>
+                    <td>
+                        <div class="opponent-info">
+                            <div class="opponent-name">${opponentName}</div>
+                            <div class="opponent-rank">${opponentRank}</div>
+                        </div>
                     </td>
-                    <td><span class="color-badge ${playerColor.toLowerCase()}">${playerColor}</span></td>
-                    <td><span class="result ${result === 'W' ? 'win' : result === 'L' ? 'loss' : 'unknown'}">${result}</span></td>
-                    <td class="date-cell">${date}</td>
-                    <td><a href="https://online-go.com/game/${game.id}" target="_blank" class="game-link">View</a></td>
+                    <td>
+                        <span class="color-${playerColor.toLowerCase()}">${playerColor}</span>
+                    </td>
+                    <td>
+                        <span class="game-result ${resultClass}">${result}</span>
+                    </td>
+                    <td>${boardSize}</td>
+                    <td>${date}</td>
+                    <td>
+                        <a href="https://online-go.com/game/${game.id}" target="_blank" class="game-link">View Game</a>
+                    </td>
                 `;
                 
                 gamesTableBody.appendChild(row);
-            });
-        }
-
-        function calculateComprehensiveStats() {
-            if (!allGames || allGames.length === 0) return;
-            
-            let stats = {
-                total: allGames.length,
-                wins: 0,
-                losses: 0,
-                blackGames: 0,
-                blackWins: 0,
-                whiteGames: 0,
-                whiteWins: 0,
-                rankedGames: 0,
-                rankedWins: 0,
-                unrankedGames: 0,
-                boardSizes: {},
-                timeControls: {},
-                opponentStrength: { stronger: 0, equal: 0, weaker: 0 }
-            };
-            
-            allGames.forEach(game => {
-                const isBlack = game.players.black.id === currentPlayer.id;
-                const opponent = isBlack ? game.players.white : game.players.black;
-                const winner = game.black_lost ? 'white' : 'black';
-                const playerWon = (isBlack && winner === 'black') || (!isBlack && winner === 'white');
-                
-                // Basic stats
-                if (playerWon) stats.wins++;
-                else stats.losses++;
-                
-                // Color stats
-                if (isBlack) {
-                    stats.blackGames++;
-                    if (playerWon) stats.blackWins++;
-                } else {
-                    stats.whiteGames++;
-                    if (playerWon) stats.whiteWins++;
-                }
-                
-                // Ranked vs unranked
-                if (game.ranked) {
-                    stats.rankedGames++;
-                    if (playerWon) stats.rankedWins++;
-                } else {
-                    stats.unrankedGames++;
-                }
-                
-                // Board sizes
-                const boardSize = `${game.width}x${game.height}`;
-                if (!stats.boardSizes[boardSize]) {
-                    stats.boardSizes[boardSize] = { games: 0, wins: 0 };
-                }
-                stats.boardSizes[boardSize].games++;
-                if (playerWon) stats.boardSizes[boardSize].wins++;
-                
-                // Time controls
-                const timeControl = game.time_control || 'Unknown';
-                if (!stats.timeControls[timeControl]) {
-                    stats.timeControls[timeControl] = { games: 0, wins: 0 };
-                }
-                stats.timeControls[timeControl].games++;
-                if (playerWon) stats.timeControls[timeControl].wins++;
-                
-                // Opponent strength analysis
-                const playerRank = currentPlayer.ranking || 25;
-                const opponentRank = opponent.ranking || 25;
-                if (opponentRank < playerRank - 1) stats.opponentStrength.stronger++;
-                else if (Math.abs(opponentRank - playerRank) <= 1) stats.opponentStrength.equal++;
-                else stats.opponentStrength.weaker++;
-            });
-            
-            // Update UI
-            document.getElementById('totalGames').textContent = stats.total;
-            document.getElementById('totalWins').textContent = stats.wins;
-            document.getElementById('totalLosses').textContent = stats.losses;
-            document.getElementById('winRate').textContent = `${((stats.wins / stats.total) * 100).toFixed(1)}%`;
-            
-            document.getElementById('blackGames').textContent = stats.blackGames;
-            document.getElementById('blackWins').textContent = stats.blackWins;
-            document.getElementById('blackWinRate').textContent = stats.blackGames > 0 ? `${((stats.blackWins / stats.blackGames) * 100).toFixed(1)}%` : '0%';
-            
-            document.getElementById('whiteGames').textContent = stats.whiteGames;
-            document.getElementById('whiteWins').textContent = stats.whiteWins;
-            document.getElementById('whiteWinRate').textContent = stats.whiteGames > 0 ? `${((stats.whiteWins / stats.whiteGames) * 100).toFixed(1)}%` : '0%';
-            
-            document.getElementById('rankedGames').textContent = stats.rankedGames;
-            document.getElementById('rankedWins').textContent = stats.rankedWins;
-            document.getElementById('rankedWinRate').textContent = stats.rankedGames > 0 ? `${((stats.rankedWins / stats.rankedGames) * 100).toFixed(1)}%` : '0%';
-            document.getElementById('unrankedGames').textContent = stats.unrankedGames;
-            
-            document.getElementById('vsStronger').textContent = `${stats.opponentStrength.stronger} games`;
-            document.getElementById('vsEqual').textContent = `${stats.opponentStrength.equal} games`;
-            document.getElementById('vsWeaker').textContent = `${stats.opponentStrength.weaker} games`;
-            
-            // Board size breakdown
-            const boardSizeEl = document.getElementById('boardSizeBreakdown');
-            boardSizeEl.innerHTML = '';
-            Object.entries(stats.boardSizes).forEach(([size, data]) => {
-                const winRate = ((data.wins / data.games) * 100).toFixed(1);
-                boardSizeEl.innerHTML += `
-                    <div class="stat-row">
-                        <span class="stat-label">${size}:</span>
-                        <span class="stat-value">${data.games} games (${winRate}% win rate)</span>
-                    </div>
-                `;
-            });
-            
-            // Time control breakdown
-            const timeControlEl = document.getElementById('timeControlBreakdown');
-            timeControlEl.innerHTML = '';
-            Object.entries(stats.timeControls).forEach(([control, data]) => {
-                const winRate = ((data.wins / data.games) * 100).toFixed(1);
-                const displayControl = control.charAt(0).toUpperCase() + control.slice(1);
-                timeControlEl.innerHTML += `
-                    <div class="stat-row">
-                        <span class="stat-label">${displayControl}:</span>
-                        <span class="stat-value">${data.games} games (${winRate}% win rate)</span>
-                    </div>
-                `;
             });
         }
 
@@ -715,12 +1082,80 @@
         // Control event listeners
         gamesPerPageSelect.addEventListener('change', () => {
             currentPage = 1;
-            displayGames();
-            setupPagination();
+            applyFiltersAndDisplay();
         });
 
         maxGamesSelect.addEventListener('change', loadGames);
         refreshGamesBtn.addEventListener('click', loadGames);
+
+        // Export/Import functionality (gotstats feature)
+        document.getElementById('exportData').addEventListener('click', exportGameData);
+        document.getElementById('importBtn').addEventListener('click', () => {
+            document.getElementById('importData').click();
+        });
+        document.getElementById('importData').addEventListener('change', importGameData);
+
+        // Filter event listeners
+        document.getElementById('gameFilter').addEventListener('change', applyFiltersAndDisplay);
+        document.getElementById('boardSizeFilter').addEventListener('change', applyFiltersAndDisplay);
+        document.getElementById('timePeriod').addEventListener('change', applyFiltersAndDisplay);
+
+        function exportGameData() {
+            if (!currentPlayer || !allGames) {
+                showModal('Export Error', 'No game data to export. Please load a player first.');
+                return;
+            }
+
+            const exportData = {
+                player: currentPlayer,
+                games: allGames,
+                exportDate: new Date().toISOString(),
+                gameCount: allGames.length
+            };
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `${currentPlayer.username}_gotstats_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showModal('Export Complete', `Exported ${allGames.length} games for ${currentPlayer.username}`);
+        }
+
+        function importGameData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importData = JSON.parse(e.target.result);
+                    
+                    if (!importData.player || !importData.games) {
+                        showModal('Import Error', 'Invalid file format. Please select a valid gotstats export file.');
+                        return;
+                    }
+
+                    currentPlayer = importData.player;
+                    allGames = importData.games.filter(game => 
+                        game.ended !== null && game.ended !== undefined
+                    );
+
+                    displayPlayerStats(currentPlayer);
+                    calculateComprehensiveStats();
+                    applyFiltersAndDisplay();
+                    
+                    showModal('Import Complete', `Imported ${allGames.length} games for ${currentPlayer.username}`);
+                    
+                } catch (error) {
+                    console.error('Import error:', error);
+                    showModal('Import Error', 'Failed to parse the imported file. Please check the file format.');
+                }
+            };
+            reader.readAsText(file);
+        }
 
         // Sidebar functionality
         const hamburger = document.getElementById('hamburger');

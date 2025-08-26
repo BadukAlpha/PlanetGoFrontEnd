@@ -3267,3 +3267,706 @@ body::before {
    END OF CSS FRAMEWORK
    Total Lines: 2900+
    ===================================== */
+
+/* ===== GOTSTATS-STYLE LAYOUT ===== */
+
+/* Player Header Section */
+.player-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: linear-gradient(135deg, rgba(30, 30, 50, 0.95), rgba(50, 30, 80, 0.95));
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(100, 200, 255, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    animation: float 6s ease-in-out infinite;
+}
+
+.player-avatar {
+    position: relative;
+}
+
+.avatar-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(100, 200, 255, 0.5);
+    box-shadow: 0 0 20px rgba(100, 200, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.avatar-image:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(100, 200, 255, 0.6);
+}
+
+.player-details {
+    flex: 1;
+}
+
+.player-name {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 0 2px 10px rgba(100, 200, 255, 0.3);
+}
+
+.player-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.player-rank, .player-country {
+    background: rgba(100, 200, 255, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    color: #e0e0ff;
+    border: 1px solid rgba(100, 200, 255, 0.3);
+}
+
+.player-rating {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #64c8ff;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.games-selector {
+    background: rgba(20, 20, 40, 0.8);
+    border: 1px solid rgba(100, 200, 255, 0.3);
+    color: #e0e0ff;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.games-selector:hover {
+    border-color: rgba(100, 200, 255, 0.6);
+    background: rgba(30, 30, 60, 0.9);
+}
+
+.refresh-btn {
+    background: linear-gradient(135deg, rgba(100, 200, 255, 0.2), rgba(150, 100, 255, 0.2));
+    border: 1px solid rgba(100, 200, 255, 0.4);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.refresh-btn:hover {
+    background: linear-gradient(135deg, rgba(100, 200, 255, 0.3), rgba(150, 100, 255, 0.3));
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(100, 200, 255, 0.3);
+}
+
+/* Export/Import buttons */
+.export-btn, .import-btn {
+    background: linear-gradient(135deg, rgba(100, 200, 255, 0.2), rgba(150, 100, 255, 0.2));
+    border: 1px solid rgba(100, 200, 255, 0.4);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+
+.export-btn:hover, .import-btn:hover {
+    background: linear-gradient(135deg, rgba(100, 200, 255, 0.3), rgba(150, 100, 255, 0.3));
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(100, 200, 255, 0.3);
+}
+
+/* Outcome Analysis Grid */
+.outcome-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.outcome-stat {
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.outcome-stat:hover {
+    background: rgba(30, 30, 60, 0.8);
+    transform: translateY(-2px);
+}
+
+.outcome-label {
+    font-size: 0.9rem;
+    color: #b0b0d0;
+    margin-bottom: 0.5rem;
+}
+
+.outcome-values {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+}
+
+.outcome-won {
+    color: #4ade80;
+    font-weight: 600;
+}
+
+.outcome-lost {
+    color: #f87171;
+    font-weight: 600;
+}
+
+/* Time Period Controls */
+.time-period-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 10px;
+}
+
+.period-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.period-stat {
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.period-label {
+    font-size: 0.9rem;
+    color: #b0b0d0;
+    margin-bottom: 0.5rem;
+}
+
+.period-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #64c8ff;
+}
+
+/* Rank Progression */
+.rank-progression {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.rank-chart-container {
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.rank-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.rank-stat {
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.rank-label {
+    font-size: 0.9rem;
+    color: #b0b0d0;
+    margin-bottom: 0.5rem;
+}
+
+.rank-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #64c8ff;
+}
+
+/* Enhanced Games Filters */
+.games-filters {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.games-filters label {
+    color: #b0b0d0;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+}
+
+/* Main Stats Grid */
+.main-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.stats-section {
+    background: linear-gradient(135deg, rgba(30, 30, 50, 0.95), rgba(50, 30, 80, 0.95));
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(100, 200, 255, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    animation: float 6s ease-in-out infinite;
+}
+
+.stats-section:nth-child(even) {
+    animation-delay: -3s;
+}
+
+.stats-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(100, 200, 255, 0.2);
+}
+
+.stats-section.full-width {
+    grid-column: 1 / -1;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 1.5rem 0;
+    text-shadow: 0 2px 10px rgba(100, 200, 255, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Stats Cards */
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.stat-card {
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    background: rgba(30, 30, 60, 0.8);
+    border-color: rgba(100, 200, 255, 0.4);
+    transform: translateY(-3px);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #64c8ff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 10px rgba(100, 200, 255, 0.3);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #b0b0d0;
+    font-weight: 500;
+}
+
+.win-color {
+    color: #4ade80 !important;
+}
+
+.loss-color {
+    color: #f87171 !important;
+}
+
+/* Color Statistics */
+.color-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.color-stat-group {
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem;
+}
+
+.color-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 1rem 0;
+    text-align: center;
+}
+
+.color-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.color-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-value {
+    font-weight: 600;
+    color: #64c8ff;
+}
+
+.stat-name {
+    color: #b0b0d0;
+    font-size: 0.9rem;
+}
+
+/* Ranked Stats */
+.ranked-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.ranked-group {
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem;
+}
+
+.ranked-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 1rem 0;
+    text-align: center;
+}
+
+.ranked-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.ranked-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Board Size and Time Control Stats */
+.board-size-stats, .time-control-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.size-stat, .time-stat {
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.size-stat:hover, .time-stat:hover {
+    background: rgba(30, 30, 60, 0.8);
+    transform: translateY(-2px);
+}
+
+.size-label, .time-label {
+    font-size: 0.9rem;
+    color: #b0b0d0;
+    margin-bottom: 0.5rem;
+}
+
+.size-value, .time-value {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #64c8ff;
+}
+
+/* Opponent Strength Analysis */
+.opponent-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.opponent-stat {
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.opponent-stat:hover {
+    background: rgba(30, 30, 60, 0.8);
+    transform: translateY(-3px);
+}
+
+.opponent-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.opponent-data {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.opponent-count {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #64c8ff;
+}
+
+.opponent-label {
+    font-size: 0.9rem;
+    color: #b0b0d0;
+}
+
+/* Games Controls */
+.games-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 15px;
+}
+
+.control-select {
+    background: rgba(20, 20, 40, 0.8);
+    border: 1px solid rgba(100, 200, 255, 0.3);
+    color: #e0e0ff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.control-select:hover {
+    border-color: rgba(100, 200, 255, 0.6);
+    background: rgba(30, 30, 60, 0.9);
+}
+
+/* Enhanced Games Table */
+.games-table-container {
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.games-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.games-table th {
+    background: linear-gradient(135deg, rgba(50, 50, 80, 0.9), rgba(70, 50, 100, 0.9));
+    color: #fff;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(100, 200, 255, 0.3);
+}
+
+.games-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(100, 200, 255, 0.1);
+    color: #e0e0ff;
+    transition: all 0.3s ease;
+}
+
+.games-table tr:hover td {
+    background: rgba(30, 30, 60, 0.6);
+    color: #fff;
+}
+
+.game-result {
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.result-win {
+    background: rgba(74, 222, 128, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.result-loss {
+    background: rgba(248, 113, 113, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.color-black {
+    color: #333;
+    background: #fff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.color-white {
+    color: #fff;
+    background: #333;
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Opponent Info in Games Table */
+.opponent-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.opponent-name {
+    font-weight: 600;
+    color: #fff;
+}
+
+.opponent-rank {
+    font-size: 0.8rem;
+    color: #b0b0d0;
+}
+
+.game-link {
+    color: #64c8ff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.game-link:hover {
+    color: #4ade80;
+    text-decoration: underline;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.pagination button {
+    background: rgba(20, 20, 40, 0.8);
+    border: 1px solid rgba(100, 200, 255, 0.3);
+    color: #e0e0ff;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.pagination button:hover {
+    background: rgba(30, 30, 60, 0.9);
+    border-color: rgba(100, 200, 255, 0.6);
+    transform: translateY(-1px);
+}
+
+.pagination button.active {
+    background: linear-gradient(135deg, rgba(100, 200, 255, 0.3), rgba(150, 100, 255, 0.3));
+    border-color: rgba(100, 200, 255, 0.6);
+    color: #fff;
+}
+
+/* Responsive Design for gotstats layout */
+@media (max-width: 768px) {
+    .player-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .main-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .color-stats-grid, .ranked-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .opponent-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .games-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .games-table {
+        font-size: 0.8rem;
+    }
+    
+    .games-table th, .games-table td {
+        padding: 0.7rem 0.5rem;
+    }
+}
+
+/* ===== END GOTSTATS-STYLE LAYOUT ===== */
