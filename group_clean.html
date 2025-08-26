@@ -3,19 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seasons - PlanetGo</title>
+    <title>PlanetGo - Group Page</title>
     <link rel="stylesheet" href="ultra-modern.css">
-    <script src="night-sky.js"></script>
 </head>
 <body>
-    <!-- Dynamic Night Sky Scene -->
-    <div class="night-sky-scene" id="nightSkyScene">
-        <div class="twinkling-stars"></div>
-        <div class="hill"></div>
-        <div class="moon"></div>
-        <div class="northern-lights" id="northernLights"></div>
-    </div>
-
     <!-- Header -->
     <header class="header" id="header">
         <div class="hamburger" id="hamburger">
@@ -24,6 +15,7 @@
         <div class="logo">PlanetGo</div>
         <div style="width: 50px;"></div>
     </header>
+
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -31,66 +23,94 @@
         </div>
         <ul class="sidebar-nav">
             <li><a href="home.html">🏠 Home</a></li>
-            <li><a href="group.html">👥 Group Page</a></li>
+            <li><a href="group.html" class="active">👥 Group Page</a></li>
             <li><a href="tournaments.html">🏆 Tournaments</a></li>
             <li><a href="tutor.html">📚 Tutorings</a></li>
-            <li><a href="seasons.html" class="active">🎯 Seasons</a></li>
+            <li><a href="seasons.html">🎯 Seasons</a></li>
             <li><a href="goresources.html">🔗 Go Resources</a></li>
             <li><a href="mystats.html">📊 MyStats</a></li>
         </ul>
     </nav>
+    
     <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
+
     <!-- Main Content -->
     <main class="main-content" id="mainContent">
-        <h1>🎯 Go Season Format</h1>
-        <div class="season-description">
-            <h2>How the Season Works</h2>
-            <p>
-                Each Go season is structured like a professional league. All registered players are divided into pools, where they compete in a round-robin format. After pool play, the top 64 participants with the best records advance to a single elimination bracket. The winner of the bracket is crowned the season champion.
-            </p>
-            <ul style="margin-top:2rem;">
-                <li><b>Pool Play:</b> Players are split into pools and play against every other player in their pool.</li>
-                <li><b>Advancement:</b> The top 64 players overall move on to the next stage.</li>
-                <li><b>Single Elimination:</b> The final 64 compete in a knockout bracket until only one champion remains.</li>
-            </ul>
+        <div class="container">
+            <div class="welcome-section">
+                <h1 class="welcome-title">Join Our Community</h1>
+                <p class="welcome-subtitle">Connect with Go enthusiasts from around the galaxy</p>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-box-content">
+                    <h3>👥 About Our Group</h3>
+                    <p>Join our vibrant Go community groups where players gather to discuss strategies, organize games, and share their passion. Create study groups, participate in group challenges, and connect with players of your skill level.</p>
+
+                    <h3 style="margin-top: 2rem;">Why Become a Member?</h3>
+                    <ul class="benefits-list">
+                        <li>Access exclusive tournaments and competitive events</li>
+                        <li>Connect with passionate Go players worldwide</li>
+                        <li>Participate in study groups and skill-building workshops</li>
+                        <li>Receive personalized game reviews from experienced players</li>
+                        <li>Join our supportive and welcoming learning community</li>
+                        <li>Get priority access to special events and masterclasses</li>
+                    </ul>
+
+                    <div class="cta-section">
+                        <a href="https://online-go.com/group/15546" target="_blank" class="btn">
+                            🚀 Become a Member
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
+
     <script>
-    // Sidebar functionality (same as home.html)
+        // Sidebar functionality
         const hamburger = document.getElementById('hamburger');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
         const header = document.getElementById('header');
         const mainContent = document.getElementById('mainContent');
         let sidebarOpen = false;
+        
         function toggleSidebar() {
             sidebarOpen = !sidebarOpen;
             if (sidebarOpen) {
                 sidebar.classList.add('open');
-                overlay.classList.add('active');
+                overlay.classList.add('open');
                 hamburger.classList.add('active');
                 header.classList.add('sidebar-open');
                 mainContent.classList.add('sidebar-open');
             } else {
                 sidebar.classList.remove('open');
-                overlay.classList.remove('active');
+                overlay.classList.remove('open');
                 hamburger.classList.remove('active');
                 header.classList.remove('sidebar-open');
                 mainContent.classList.remove('sidebar-open');
             }
         }
+        
         hamburger.addEventListener('click', toggleSidebar);
         overlay.addEventListener('click', toggleSidebar);
+        
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && sidebarOpen) {
                 toggleSidebar();
             }
         });
+
+        // Sidebar flip on hover (only if not open)
+        sidebar.addEventListener('mouseenter', function () {
+            if (!sidebarOpen) sidebar.classList.add('flip-hover');
+        });
+        
+        sidebar.addEventListener('mouseleave', function () {
+            sidebar.classList.remove('flip-hover');
+        });
     </script>
 </body>
-</body>
-<footer style="text-align:center; margin:2rem 0; color:#aaa;">
-    Backend code: <a href="https://github.com/BadukAlpha/PlanetGoBackEnd/tree/master" target="_blank" style="color:#0cf;">https://github.com/BadukAlpha/PlanetGoBackEnd/tree/master</a>
-</footer>
 </html>
