@@ -52,35 +52,59 @@
             const username = document.getElementById('usernameInput').value.trim();
             const statsResult = document.getElementById('statsResult');
             statsResult.innerHTML = '';
+            
             if (!username) {
                 alert('Please enter a username.');
                 return;
             }
-            // Check if username exists on OGS
+            
+            statsResult.innerHTML = '<p>🔍 Looking up username on OGS...</p>';
+            
             try {
+                // Check if username exists on OGS
                 const userResp = await fetch(`https://online-go.com/api/v1/players?username=${encodeURIComponent(username)}`);
                 const userData = await userResp.json();
+                
                 if (!userData.results || userData.results.length === 0) {
-                    alert('Username not found on OGS.');
+                    statsResult.innerHTML = '<p>❌ Username not found on OGS. Please check the spelling and try again.</p>';
                     return;
                 }
+                
                 // Username exists, fetch stats from deployed backend
-                statsResult.innerHTML = '<p>Fetching stats for <b>' + username + '</b>...</p>';
+                statsResult.innerHTML = '<p>✅ Username found! Fetching stats for <b>' + username + '</b>...</p>';
+                
                 const backendUrl = 'https://planet-go-back-end.vercel.app/api/stats?username=' + encodeURIComponent(username);
+                console.log('Fetching from:', backendUrl);
+                
                 const statsResp = await fetch(backendUrl);
+                console.log('Response status:', statsResp.status);
+                
                 if (!statsResp.ok) {
-                    statsResult.innerHTML = '<p>Could not fetch stats. Please try again later.</p>';
+                    const errorText = await statsResp.text();
+                    console.error('Backend error:', errorText);
+                    statsResult.innerHTML = `<p>❌ Backend error (${statsResp.status}). Please try again later.</p>`;
                     return;
                 }
+                
                 const statsData = await statsResp.json();
-                // For now, just show the number of games as a placeholder
+                console.log('Stats data:', statsData);
+                
+                // Display results
                 if (statsData && statsData.results && statsData.results.length > 0) {
-                    statsResult.innerHTML = `<p><b>${username}</b> has played <b>${statsData.results.length}</b> games on OGS.</p>`;
+                    const gamesCount = statsData.results.length;
+                    statsResult.innerHTML = `
+                        <div style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <h3>📊 Stats for ${username}</h3>
+                            <p><b>Total Games:</b> ${gamesCount}</p>
+                            <p><small>More detailed stats coming soon!</small></p>
+                        </div>
+                    `;
                 } else {
-                    statsResult.innerHTML = `<p>No games found for <b>${username}</b>.</p>`;
+                    statsResult.innerHTML = `<p>📋 No games found for <b>${username}</b>.</p>`;
                 }
             } catch (err) {
-                statsResult.innerHTML = '<p>Error fetching stats. Please try again later.</p>';
+                console.error('Error fetching stats:', err);
+                statsResult.innerHTML = '<p>❌ Error fetching stats. Please try again later.</p>';
             }
         });
         // Sidebar functionality (same as home.html)
