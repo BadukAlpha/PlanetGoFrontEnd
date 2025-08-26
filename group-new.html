@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanetGo - Group Page</title>
+    <link rel="stylesheet" href="ultra-modern.css">
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="hamburger" id="hamburger">
+            <div class="astronaut"></div>
+        </div>
+        <div class="logo">PlanetGo</div>
+        <div style="width: 50px;"></div>
+    </header>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Navigation</h2>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="home.html">🏠 Home</a></li>
+            <li><a href="group.html" class="active">👥 Group Page</a></li>
+            <li><a href="tournaments.html">🏆 Tournaments</a></li>
+            <li><a href="tutor.html">📚 Tutorings</a></li>
+            <li><a href="seasons.html">🎯 Seasons</a></li>
+            <li><a href="goresources.html">🔗 Go Resources</a></li>
+            <li><a href="mystats.html">📊 MyStats</a></li>
+        </ul>
+    </nav>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="container">
+            <section class="page-header">
+                <h1 class="gradient-text">👥 Group Page</h1>
+                <p class="text-muted">Join our vibrant Go community and connect with players worldwide</p>
+            </section>
+
+            <div class="glass-panel fade-in">
+                <div class="card-header">
+                    <h3 class="card-title">Welcome to PlanetGo Groups</h3>
+                    <p class="card-subtitle">Connect, learn, and grow together in our Go community</p>
+                </div>
+                <div class="card-body">
+                    <p>Join our vibrant Go community groups where players gather to discuss strategies, organize games, and share their passion. Create study groups, participate in group challenges, and connect with players of your skill level.</p>
+                    
+                    <ul class="benefits-list">
+                        <li>Connect with Go players from around the world</li>
+                        <li>Join study groups and improve together</li>
+                        <li>Participate in group tournaments and challenges</li>
+                        <li>Share strategies and learn from experienced players</li>
+                        <li>Organize local meetups and events</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="#" class="btn btn-primary btn-lg">Join Community</a>
+                    <a href="#" class="btn btn-outline btn-lg">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sidebar functionality
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const header = document.getElementById('header');
+        const mainContent = document.getElementById('mainContent');
+        let sidebarOpen = false;
+
+        function toggleSidebar() {
+            sidebarOpen = !sidebarOpen;
+            if (sidebarOpen) {
+                sidebar.classList.add('open');
+                overlay.classList.add('open');
+                hamburger.classList.add('active');
+                header.classList.add('sidebar-open');
+                mainContent.classList.add('sidebar-open');
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+                hamburger.classList.remove('active');
+                header.classList.remove('sidebar-open');
+                mainContent.classList.remove('sidebar-open');
+            }
+        }
+
+        hamburger.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // Sidebar flip on hover (only if not open)
+        sidebar.addEventListener('mouseenter', function () {
+            if (!sidebarOpen) sidebar.classList.add('flip-hover');
+        });
+        sidebar.addEventListener('mouseleave', function () {
+            sidebar.classList.remove('flip-hover');
+        });
+
+        // Particle system
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 15;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 12 + 's';
+                particle.style.animationDuration = (Math.random() * 6 + 8) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize particles on load
+        window.addEventListener('load', createParticles);
+
+        // Close sidebar on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebarOpen) {
+                toggleSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

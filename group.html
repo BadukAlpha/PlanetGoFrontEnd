@@ -4,80 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PlanetGo - Group Page</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #000000;
-            min-height: 100vh;
-            color: #ffffff;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* Header */
-        .header {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(24px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 1.5rem 2rem;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .logo {
-            font-size: 1.75rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #00d4ff, #7c3aed, #f59e0b);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 4s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .back-btn {
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(124, 58, 237, 0.2));
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 50px;
-            color: #00d4ff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .back-btn:hover {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(124, 58, 237, 0.3));
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-top: 100px;
-            padding: 4rem 2rem;
-            min-height: calc(100vh - 100px);
-            display: flex;
-            align-items: center;
+    <link rel="stylesheet" href="ultra-modern.css">
+/* PlanetGo Modern UI Styles */
+:root {
+    --primary: #00d4ff;
+    --secondary: #7c3aed;
+    --accent: #f59e0b;
+    --bg: #0a0a0a;
+    --glass: rgba(20, 20, 20, 0.8);
+    --border: rgba(255,255,255,0.08);
+    --text: #fff;
+    --text-muted: #9ca3af;
+    --shadow: 0 4px 32px rgba(0,212,255,0.08);
+    --radius: 18px;
+    --transition: 0.3s cubic-bezier(.4,0,.2,1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; overflow-x: hidden; animation: fadeInBody 0.7s; }
+@keyframes fadeInBody { from { opacity: 0; } to { opacity: 1; } }
+.header { background: var(--glass); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); box-shadow: var(--shadow); animation: slideDown 0.7s; }
+@keyframes slideDown { from { transform: translateY(-40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.logo { font-size: 1.75rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent)); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradientShift 4s ease-in-out infinite; }
+@keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.sidebar { position: fixed; top: 0; left: -280px; width: 260px; height: 100vh; background: var(--glass); box-shadow: var(--shadow); z-index: 1200; transition: left var(--transition); padding-top: 90px; border-right: 1px solid var(--border); animation: fadeInSidebar 0.7s; transform: perspective(600px) rotateY(-18deg); }
+.sidebar.open { left: 0; transform: none; box-shadow: 0 0 32px 0 rgba(0,212,255,0.12); }
+.sidebar.flip-hover:not(.open) { left: -240px; transform: perspective(600px) rotateY(-2deg) scale(1.04); box-shadow: 0 0 32px 0 rgba(0,212,255,0.10); transition: left 0.3s, transform 0.3s, box-shadow 0.3s; }
+@keyframes fadeInSidebar { from { opacity: 0; } to { opacity: 1; } }
+.sidebar-header { padding: 1.5rem 1.5rem 0.5rem 1.5rem; }
+.sidebar-title { font-size: 1.2rem; color: var(--primary); font-weight: 600; }
+.sidebar-nav { list-style: none; padding: 1rem 0 0 0; }
+.sidebar-nav li { margin-bottom: 1.2rem; }
+.sidebar-nav a { color: var(--text); text-decoration: none; font-size: 1.1rem; padding: 0.7rem 1.2rem; border-radius: 8px; display: block; transition: background var(--transition), color var(--transition), transform var(--transition); }
+.sidebar-nav a.active, .sidebar-nav a:hover { background: linear-gradient(135deg, var(--primary) 60%, var(--secondary)); color: #fff; transform: translateX(8px) scale(1.04); }
+.overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 1100; opacity: 0; pointer-events: none; transition: opacity var(--transition); }
+.overlay.open { opacity: 1; pointer-events: all; }
+.main-content { margin-left: 0; margin-top: 100px; padding: 0 2rem 2rem; animation: fadeInMain 0.8s; }
+@keyframes fadeInMain { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+.season-description, .stats-placeholder, .card, .panel { background: var(--glass); border-radius: var(--radius); box-shadow: var(--shadow); padding: 2.5rem; margin: 2rem auto; max-width: 700px; animation: fadeInPanel 1s; }
+@keyframes fadeInPanel { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+h1, h2, h3 { text-align: center; margin-bottom: 1.2rem; font-weight: 700; letter-spacing: 0.01em; }
+h1 { font-size: 2.2rem; } h2 { font-size: 1.5rem; } h3 { font-size: 1.2rem; }
+p, ul, li { color: var(--text-muted); font-size: 1.08rem; }
+input[type="text"], input[type="email"], input[type="password"], textarea { padding: 0.75rem 1.2rem; border-radius: 8px; border: none; width: 70%; font-size: 1rem; background: #18181b; color: #fff; margin-bottom: 1rem; transition: box-shadow var(--transition); box-shadow: 0 2px 8px rgba(0,212,255,0.04); }
+input:focus, textarea:focus { outline: none; box-shadow: 0 0 0 2px var(--primary); }
+button, .btn { padding: 0.75rem 1.5rem; border-radius: 8px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; border: none; font-weight: 600; font-size: 1rem; cursor: pointer; margin-left: 0.5rem; transition: background var(--transition), transform var(--transition), box-shadow var(--transition); box-shadow: 0 2px 8px rgba(0,212,255,0.08); }
+button:hover, .btn:hover { background: linear-gradient(135deg, var(--secondary), var(--primary)); transform: translateY(-2px) scale(1.04); box-shadow: 0 4px 16px rgba(124,58,237,0.12); }
+.fade-in { animation: fadeInMain 0.8s; }
+@media (max-width: 900px) { .main-content, .season-description, .card, .panel { padding: 1.2rem; } .sidebar { width: 200px; } }
+@media (max-width: 600px) { .header { padding: 1rem; } .main-content { padding: 0 0.5rem 1rem; } .sidebar { width: 100vw; left: -100vw; } .sidebar.open { left: 0; } }
+        </style>
             justify-content: center;
         }
 
@@ -374,5 +349,42 @@
         // Add smooth scroll behavior
         document.documentElement.style.scrollBehavior = 'smooth';
     </script>
+<script>
+// sidebar.js - Handles sidebar flip/slide on hover and pop-out on click
+document.addEventListener('DOMContentLoaded', function () {
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const header = document.getElementById('header');
+    const mainContent = document.getElementById('mainContent');
+    let sidebarOpen = false;
+    // Sidebar pop-out on click
+    function toggleSidebar() {
+        sidebarOpen = !sidebarOpen;
+        if (sidebarOpen) {
+            sidebar.classList.add('open');
+            overlay.classList.add('open');
+            hamburger.classList.add('active');
+            header.classList.add('sidebar-open');
+            mainContent.classList.add('sidebar-open');
+        } else {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+            hamburger.classList.remove('active');
+            header.classList.remove('sidebar-open');
+            mainContent.classList.remove('sidebar-open');
+        }
+    }
+    hamburger.addEventListener('click', toggleSidebar);
+    overlay.addEventListener('click', toggleSidebar);
+    // Sidebar flip on hover (only if not open)
+    sidebar.addEventListener('mouseenter', function () {
+        if (!sidebarOpen) sidebar.classList.add('flip-hover');
+    });
+    sidebar.addEventListener('mouseleave', function () {
+        sidebar.classList.remove('flip-hover');
+    });
+});
+</script>
 </body>
 </html>
