@@ -19,7 +19,9 @@
     <!-- Header -->
     <header class="header" id="header">
         <div class="hamburger" id="hamburger">
-            <div class="astronaut"></div>
+            <div class="astronaut-svg">
+                <img src="astronaut.svg" alt="Astronaut" class="astronaut-icon">
+            </div>
         </div>
         <div class="logo">PlanetGo</div>
         <div style="width: 50px;"></div>
@@ -90,11 +92,128 @@
                 <!-- Player Info Header -->
                 <div id="playerInfo" class="player-info"></div>
                 
+                <!-- Comprehensive Game Statistics -->
+                <div class="comprehensive-stats">
+                    <div class="stats-grid">
+                        <!-- Overall Stats -->
+                        <div class="stat-card overall-stats">
+                            <h3>🎯 Overall Statistics</h3>
+                            <div class="stat-row">
+                                <span class="stat-label">Total Games:</span>
+                                <span class="stat-value" id="totalGames">-</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Wins:</span>
+                                <span class="stat-value win" id="totalWins">-</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Losses:</span>
+                                <span class="stat-value loss" id="totalLosses">-</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Win Rate:</span>
+                                <span class="stat-value" id="winRate">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Color Statistics -->
+                        <div class="stat-card color-stats">
+                            <h3>⚫⚪ Color Statistics</h3>
+                            <div class="color-breakdown">
+                                <div class="color-section">
+                                    <h4>As Black</h4>
+                                    <div class="stat-row">
+                                        <span class="stat-label">Games:</span>
+                                        <span class="stat-value" id="blackGames">-</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-label">Wins:</span>
+                                        <span class="stat-value win" id="blackWins">-</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-label">Win Rate:</span>
+                                        <span class="stat-value" id="blackWinRate">-</span>
+                                    </div>
+                                </div>
+                                <div class="color-section">
+                                    <h4>As White</h4>
+                                    <div class="stat-row">
+                                        <span class="stat-label">Games:</span>
+                                        <span class="stat-value" id="whiteGames">-</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-label">Wins:</span>
+                                        <span class="stat-value win" id="whiteWins">-</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-label">Win Rate:</span>
+                                        <span class="stat-value" id="whiteWinRate">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Game Type Statistics -->
+                        <div class="stat-card game-type-stats">
+                            <h3>🏆 Game Type Breakdown</h3>
+                            <div class="stat-row">
+                                <span class="stat-label">Ranked Games:</span>
+                                <span class="stat-value" id="rankedGames">-</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Ranked Wins:</span>
+                                <span class="stat-value win" id="rankedWins">-</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Ranked Win Rate:</span>
+                                <span class="stat-value" id="rankedWinRate">-</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Unranked Games:</span>
+                                <span class="stat-value" id="unrankedGames">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Board Size Statistics -->
+                        <div class="stat-card board-size-stats">
+                            <h3>📐 Board Size Statistics</h3>
+                            <div id="boardSizeBreakdown">
+                                <!-- Will be populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Opponent Strength Analysis -->
+                        <div class="stat-card opponent-stats">
+                            <h3>👥 Opponent Analysis</h3>
+                            <div class="stat-row">
+                                <span class="stat-label">vs Stronger Players:</span>
+                                <span class="stat-value" id="vsStronger">-</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">vs Equal Players:</span>
+                                <span class="stat-value" id="vsEqual">-</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">vs Weaker Players:</span>
+                                <span class="stat-value" id="vsWeaker">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Time Control Statistics -->
+                        <div class="stat-card time-stats">
+                            <h3>⏱️ Time Control Breakdown</h3>
+                            <div id="timeControlBreakdown">
+                                <!-- Will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Controls -->
                 <div class="stats-controls">
                     <div class="control-group">
                         <label for="gamesPerPage">Games per page:</label>
-                        <select id="gamesPerPage" class="control-select">
+                        <select id="gamesPerPage" class="control-select black-select">
                             <option value="10" selected>10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>
@@ -103,7 +222,7 @@
                     
                     <div class="control-group">
                         <label for="maxGames">Max games to load:</label>
-                        <select id="maxGames" class="control-select">
+                        <select id="maxGames" class="control-select black-select">
                             <option value="20" selected>20</option>
                             <option value="50">50</option>
                             <option value="100">100</option>
@@ -137,9 +256,19 @@
                 <div id="pagination" class="pagination"></div>
                 
                 <!-- Loading indicator -->
-                <div id="loadingGames" class="loading-indicator" style="display: none;">
-                    <div class="spinner"></div>
-                    <p>Loading games...</p>
+                <div id="loadingGames" class="loading-indicator modern-loading" style="display: none;">
+                    <div class="loading-animation">
+                        <div class="cosmic-spinner">
+                            <div class="ring ring-1"></div>
+                            <div class="ring ring-2"></div>
+                            <div class="ring ring-3"></div>
+                            <div class="center-star">⭐</div>
+                        </div>
+                        <div class="loading-text">
+                            <p class="loading-title">Loading Game Data...</p>
+                            <p class="loading-subtitle">Analyzing your cosmic Go journey</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -242,7 +371,10 @@
 
         async function loadPlayerById(playerId) {
             try {
-                const response = await fetch(`https://planet-go-back-end.vercel.app/api/stats?playerId=${playerId}&pageSize=20&ordering=-ended`);
+                const maxGames = parseInt(maxGamesSelect.value);
+                showModal('Loading...', `Loading player data and ${maxGames} games...`);
+                
+                const response = await fetch(`https://planet-go-back-end.vercel.app/api/stats?playerId=${playerId}&pageSize=${maxGames}&ordering=-ended`);
                 
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
@@ -258,9 +390,15 @@
                 const data = await response.json();
                 if (data.success && data.player) {
                     currentPlayer = data.player;
-                    allGames = data.games.results || [];
+                    
+                    // Filter out active games (games in progress)
+                    allGames = (data.games.results || []).filter(game => 
+                        game.ended !== null && game.ended !== undefined
+                    );
+                    
                     hideModal(); // Hide loading modal
                     displayPlayerStats(data.player);
+                    calculateComprehensiveStats();
                     displayGames();
                     setupPagination();
                 } else {
@@ -326,10 +464,9 @@
             
             loadingGames.style.display = 'block';
             const maxGames = parseInt(maxGamesSelect.value);
-            const pageSize = Math.min(maxGames, 100); // Backend limits to 100 per request
             
             try {
-                const response = await fetch(`https://planet-go-back-end.vercel.app/api/stats?playerId=${currentPlayer.id}&pageSize=${pageSize}&maxGames=${maxGames}&ordering=-ended`);
+                const response = await fetch(`https://planet-go-back-end.vercel.app/api/stats?playerId=${currentPlayer.id}&pageSize=${maxGames}&ordering=-ended`);
                 
                 if (!response.ok) {
                     const errorData = await response.json();
@@ -340,8 +477,12 @@
                 const data = await response.json();
                 
                 if (data.success && data.games) {
-                    allGames = data.games.results || [];
+                    // Filter out active games (games in progress)
+                    allGames = (data.games.results || []).filter(game => 
+                        game.ended !== null && game.ended !== undefined
+                    );
                     currentPage = 1;
+                    calculateComprehensiveStats();
                     displayGames();
                     setupPagination();
                 } else {
@@ -371,31 +512,150 @@
                 const opponent = isBlack ? game.players.white : game.players.black;
                 const playerColor = isBlack ? 'Black' : 'White';
                 
-                // Determine result
-                let result = 'In Progress';
+                // Determine result - only show W or L
+                let result = '-';
                 if (game.ended) {
                     const winner = game.black_lost ? 'white' : 'black';
                     const playerWon = (isBlack && winner === 'black') || (!isBlack && winner === 'white');
                     result = playerWon ? 'W' : 'L';
-                    
-                    // Add margin if available
-                    if (game.outcome && (game.outcome.includes('points') || game.outcome.includes('resign'))) {
-                        result += ` (${game.outcome.split(' ').slice(-1)[0]})`;
-                    }
                 }
                 
                 // Format date
                 const date = new Date(game.ended || game.started).toLocaleDateString();
                 
                 row.innerHTML = `
-                    <td>${opponent.username}</td>
+                    <td class="opponent-cell">
+                        <span class="opponent-name">${opponent.username}</span>
+                        <span class="opponent-rank">${opponent.ranking ? Math.round(opponent.ranking) + 'k' : 'Unranked'}</span>
+                    </td>
                     <td><span class="color-badge ${playerColor.toLowerCase()}">${playerColor}</span></td>
-                    <td><span class="result ${result.startsWith('W') ? 'win' : result.startsWith('L') ? 'loss' : 'ongoing'}">${result}</span></td>
-                    <td>${date}</td>
-                    <td><a href="https://online-go.com/game/${game.id}" target="_blank" class="game-link">View Game</a></td>
+                    <td><span class="result ${result === 'W' ? 'win' : result === 'L' ? 'loss' : 'unknown'}">${result}</span></td>
+                    <td class="date-cell">${date}</td>
+                    <td><a href="https://online-go.com/game/${game.id}" target="_blank" class="game-link">View</a></td>
                 `;
                 
                 gamesTableBody.appendChild(row);
+            });
+        }
+
+        function calculateComprehensiveStats() {
+            if (!allGames || allGames.length === 0) return;
+            
+            let stats = {
+                total: allGames.length,
+                wins: 0,
+                losses: 0,
+                blackGames: 0,
+                blackWins: 0,
+                whiteGames: 0,
+                whiteWins: 0,
+                rankedGames: 0,
+                rankedWins: 0,
+                unrankedGames: 0,
+                boardSizes: {},
+                timeControls: {},
+                opponentStrength: { stronger: 0, equal: 0, weaker: 0 }
+            };
+            
+            allGames.forEach(game => {
+                const isBlack = game.players.black.id === currentPlayer.id;
+                const opponent = isBlack ? game.players.white : game.players.black;
+                const winner = game.black_lost ? 'white' : 'black';
+                const playerWon = (isBlack && winner === 'black') || (!isBlack && winner === 'white');
+                
+                // Basic stats
+                if (playerWon) stats.wins++;
+                else stats.losses++;
+                
+                // Color stats
+                if (isBlack) {
+                    stats.blackGames++;
+                    if (playerWon) stats.blackWins++;
+                } else {
+                    stats.whiteGames++;
+                    if (playerWon) stats.whiteWins++;
+                }
+                
+                // Ranked vs unranked
+                if (game.ranked) {
+                    stats.rankedGames++;
+                    if (playerWon) stats.rankedWins++;
+                } else {
+                    stats.unrankedGames++;
+                }
+                
+                // Board sizes
+                const boardSize = `${game.width}x${game.height}`;
+                if (!stats.boardSizes[boardSize]) {
+                    stats.boardSizes[boardSize] = { games: 0, wins: 0 };
+                }
+                stats.boardSizes[boardSize].games++;
+                if (playerWon) stats.boardSizes[boardSize].wins++;
+                
+                // Time controls
+                const timeControl = game.time_control || 'Unknown';
+                if (!stats.timeControls[timeControl]) {
+                    stats.timeControls[timeControl] = { games: 0, wins: 0 };
+                }
+                stats.timeControls[timeControl].games++;
+                if (playerWon) stats.timeControls[timeControl].wins++;
+                
+                // Opponent strength analysis
+                const playerRank = currentPlayer.ranking || 25;
+                const opponentRank = opponent.ranking || 25;
+                if (opponentRank < playerRank - 1) stats.opponentStrength.stronger++;
+                else if (Math.abs(opponentRank - playerRank) <= 1) stats.opponentStrength.equal++;
+                else stats.opponentStrength.weaker++;
+            });
+            
+            // Update UI
+            document.getElementById('totalGames').textContent = stats.total;
+            document.getElementById('totalWins').textContent = stats.wins;
+            document.getElementById('totalLosses').textContent = stats.losses;
+            document.getElementById('winRate').textContent = `${((stats.wins / stats.total) * 100).toFixed(1)}%`;
+            
+            document.getElementById('blackGames').textContent = stats.blackGames;
+            document.getElementById('blackWins').textContent = stats.blackWins;
+            document.getElementById('blackWinRate').textContent = stats.blackGames > 0 ? `${((stats.blackWins / stats.blackGames) * 100).toFixed(1)}%` : '0%';
+            
+            document.getElementById('whiteGames').textContent = stats.whiteGames;
+            document.getElementById('whiteWins').textContent = stats.whiteWins;
+            document.getElementById('whiteWinRate').textContent = stats.whiteGames > 0 ? `${((stats.whiteWins / stats.whiteGames) * 100).toFixed(1)}%` : '0%';
+            
+            document.getElementById('rankedGames').textContent = stats.rankedGames;
+            document.getElementById('rankedWins').textContent = stats.rankedWins;
+            document.getElementById('rankedWinRate').textContent = stats.rankedGames > 0 ? `${((stats.rankedWins / stats.rankedGames) * 100).toFixed(1)}%` : '0%';
+            document.getElementById('unrankedGames').textContent = stats.unrankedGames;
+            
+            document.getElementById('vsStronger').textContent = `${stats.opponentStrength.stronger} games`;
+            document.getElementById('vsEqual').textContent = `${stats.opponentStrength.equal} games`;
+            document.getElementById('vsWeaker').textContent = `${stats.opponentStrength.weaker} games`;
+            
+            // Board size breakdown
+            const boardSizeEl = document.getElementById('boardSizeBreakdown');
+            boardSizeEl.innerHTML = '';
+            Object.entries(stats.boardSizes).forEach(([size, data]) => {
+                const winRate = ((data.wins / data.games) * 100).toFixed(1);
+                boardSizeEl.innerHTML += `
+                    <div class="stat-row">
+                        <span class="stat-label">${size}:</span>
+                        <span class="stat-value">${data.games} games (${winRate}% win rate)</span>
+                    </div>
+                `;
+            });
+            
+            // Time control breakdown
+            const timeControlEl = document.getElementById('timeControlBreakdown');
+            timeControlEl.innerHTML = '';
+            Object.entries(stats.timeControls).forEach(([control, data]) => {
+                const winRate = ((data.wins / data.games) * 100).toFixed(1);
+                const displayControl = control.charAt(0).toUpperCase() + control.slice(1);
+                timeControlEl.innerHTML += `
+                    <div class="stat-row">
+                        <span class="stat-label">${displayControl}:</span>
+                        <span class="stat-value">${data.games} games (${winRate}% win rate)</span>
+                    </div>
+                `;
             });
         }
 
