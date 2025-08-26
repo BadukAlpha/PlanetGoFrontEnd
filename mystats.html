@@ -57,7 +57,7 @@
             <div class="search-section">
                 <div class="search-box">
                     <div class="search-form">
-                        <input type="text" id="usernameInput" placeholder="Enter OGS Player ID or exact username..." class="search-input">
+                        <input type="text" id="usernameInput" placeholder="Enter #PlayerID (e.g., #803789) or exact username..." class="search-input">
                         <button type="button" id="searchBtn" class="search-button">
                             <span class="search-icon">🔍</span>
                             Search
@@ -66,13 +66,13 @@
                     
                     <div class="search-options">
                         <div class="search-info">
-                            <small>💡 <strong>Player ID recommended:</strong> Use your OGS Player ID for instant results. For usernames, spelling must be exact.</small>
+                            <small>💡 <strong>Player ID recommended:</strong> Use your OGS Player ID with # prefix for instant results. For usernames, spelling must be exact.</small>
                         </div>
                         <div class="search-examples">
                             <strong>Examples:</strong>
                             <div class="example-item">
                                 <span class="example-label">Player ID:</span>
-                                <code>123456</code>
+                                <code>#123456</code>
                                 <small>(from OGS profile URL)</small>
                             </div>
                             <div class="example-item">
@@ -207,7 +207,7 @@
         async function searchPlayer() {
             const query = usernameInput.value.trim();
             if (!query) {
-                showModal('Input Required', 'Please enter a Player ID or exact username.');
+                showModal('Input Required', 'Please enter a Player ID (with # prefix) or exact username.');
                 return;
             }
 
@@ -215,8 +215,18 @@
             statsContainer.style.display = 'none';
 
             try {
-                // Check if it's a numeric ID (most reliable)
-                if (/^\d+$/.test(query)) {
+                // Check if query starts with # (indicating it's a Player ID)
+                if (query.startsWith('#')) {
+                    const playerId = query.substring(1); // Remove the # prefix
+                    if (/^\d+$/.test(playerId)) {
+                        showModal('Loading...', `Loading player data for ID: ${playerId}`);
+                        await loadPlayerById(parseInt(playerId));
+                    } else {
+                        showModal('Invalid ID Format', 'Player ID must be numeric after the # symbol (e.g., #803789)');
+                        return;
+                    }
+                } else if (/^\d+$/.test(query)) {
+                    // Legacy support: pure numeric input still works as ID
                     showModal('Loading...', `Loading player data for ID: ${query}`);
                     await loadPlayerById(parseInt(query));
                 } else {
