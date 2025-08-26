@@ -525,7 +525,7 @@
         async function loadPlayerById(playerId) {
             try {
                 const maxGames = parseInt(maxGamesSelect.value);
-                showModal('Loading...', `Loading player data and ${maxGames} games...`);
+                showModal('Loading...', `Loading player information...`);
                 
                 const response = await fetch(`https://planet-go-back-end.vercel.app/api/stats?playerId=${playerId}&pageSize=${maxGames}&ordering=-ended`);
                 
@@ -550,10 +550,8 @@
                     );
                     
                     hideModal(); // Hide loading modal
-                    displayPlayerStats(data.player);
-                    calculateComprehensiveStats();
-                    displayGames();
-                    setupPagination();
+                    displayPlayerStats(data.player, data.statistics); // Pass backend statistics
+                    applyFiltersAndDisplay(); // Use the new display function
                 } else {
                     hideModal();
                     showModal('Error', 'Failed to load player information.');
@@ -583,7 +581,6 @@
                 
                 if (exactMatch) {
                     // Exact match found - load directly
-                    showModal('Loading...', `Loading games for ${exactMatch.username}...`);
                     await loadPlayerById(exactMatch.id);
                 } else {
                     showModal('No Exact Match', `No exact match found for "${username}". Please check the spelling or use their Player ID for guaranteed results.`);
@@ -595,7 +592,7 @@
             }
         }
 
-        function displayPlayerStats(player) {
+        function displayPlayerStats(player, backendStats = null) {
             // Update player header with OGS API data structure
             const avatarUrl = player.icon ? 
                 `https://b0c2ddc39d13e1c0ddad-93a52a5bc9e7cc06c9747b365f01328a.ssl.cf1.rackcdn.com/${player.icon}-64.png` :
@@ -606,6 +603,11 @@
             document.getElementById('playerRank').textContent = player.ranking || 'Unranked';
             document.getElementById('playerCountry').textContent = player.country || 'Unknown';
             document.getElementById('playerRating').textContent = `Rating: ${player.rating ? Math.round(player.rating) : 'N/A'}`;
+            
+            // If we have backend statistics, use them immediately
+            if (backendStats) {
+                updateStatsDisplay(backendStats);
+            }
             
             statsContainer.style.display = 'block';
             currentPage = 1;
@@ -922,7 +924,14 @@
                         game.ended !== null && game.ended !== undefined
                     );
                     currentPage = 1;
-                    calculateComprehensiveStats();
+                    
+                    // Use backend statistics if available, otherwise calculate client-side
+                    if (data.statistics) {
+                        updateStatsDisplay(data.statistics);
+                    } else {
+                        calculateComprehensiveStats();
+                    }
+                    
                     displayGames();
                     setupPagination();
                 } else {
@@ -1144,6 +1153,8 @@
                     );
 
                     displayPlayerStats(currentPlayer);
+                    
+                    // Use local statistics calculation for imported data
                     calculateComprehensiveStats();
                     applyFiltersAndDisplay();
                     
