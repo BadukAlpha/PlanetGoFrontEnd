@@ -260,16 +260,26 @@
         async function searchExactUsername(username) {
             try {
                 const response = await fetch(`https://planet-go-back-end.vercel.app/api/stats?username=${encodeURIComponent(username)}&pageSize=20&ordering=-ended`);
-                const data = await response.json();
                 
                 if (!response.ok) {
                     showModal('Player Not Found', `No player found with username "${username}". Please try turning off exact username search to find similar usernames.`);
                     return;
                 }
+                
+                const data = await response.json();
 
                 if (data.multiple_players) {
-                    // Handle multiple players case
-                    displayPlayerSelection(data.players);
+                    // Check if any of the returned players is an exact match
+                    const exactMatch = data.players.find(p => p.username.toLowerCase() === username.toLowerCase());
+                    if (exactMatch) {
+                        // Use the exact match
+                        currentPlayer = exactMatch;
+                        allGames = []; // Will be loaded when we call loadGames
+                        displayPlayerStats(exactMatch);
+                        loadGames();
+                    } else {
+                        showModal('Player Not Found', `No exact match found for "${username}". Please try turning off exact username search to see similar usernames.`);
+                    }
                 } else if (data.success && data.player) {
                     currentPlayer = data.player;
                     allGames = data.games.results || [];
@@ -290,30 +300,41 @@
                 const response = await fetch(`https://planet-go-back-end.vercel.app/api/stats?username=${encodeURIComponent(username)}&pageSize=20&ordering=-ended`);
                 const data = await response.json();
                 
-                if (!response.ok) {
-                    showModal('No Results', `No players found matching "${username}".`);
+                // For partial search, we ALWAYS show results if we get any back
+                // Even if the response is not ok, we might still have similar matches
+                if (data.multiple_players && data.players && data.players.length > 0) {
+                    // Show the similar players for selection
+                    displayPlayerSelection(data.players, username);
                     return;
-                }
-
-                if (data.multiple_players) {
-                    displayPlayerSelection(data.players);
                 } else if (data.success && data.player) {
+                    // Direct match found
                     currentPlayer = data.player;
                     allGames = data.games.results || [];
                     displayPlayerStats(data.player);
                     displayGames();
                     setupPagination();
-                } else {
-                    showModal('No Results', `No players found matching "${username}".`);
+                    return;
                 }
+                
+                // If we get here, no matches were found at all
+                showModal('No Results', `No players found matching "${username}". Try a shorter search term or check the spelling.`);
             } catch (error) {
                 console.error('Error in partial username search:', error);
                 showModal('Error', 'Failed to search for players.');
             }
         }
 
-        function displayPlayerSelection(players) {
+        function displayPlayerSelection(players, searchTerm = '') {
             playerList.innerHTML = '';
+            
+            // Update the header to show search context
+            const selectionHeader = playerSelection.querySelector('h3');
+            if (searchTerm) {
+                selectionHeader.textContent = `Players similar to "${searchTerm}" (${players.length} found)`;
+            } else {
+                selectionHeader.textContent = `Multiple players found (${players.length})`;
+            }
+            
             players.forEach(player => {
                 const playerDiv = document.createElement('div');
                 playerDiv.className = 'player-item';
