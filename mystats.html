@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyStats - PlanetGo</title>
+    <title>Player Stats - PlanetGo</title>
     <link rel="stylesheet" href="ultra-modern.css">
     <script src="night-sky.js"></script>
 </head>
@@ -24,6 +24,7 @@
         <div class="logo">PlanetGo</div>
         <div style="width: 50px;"></div>
     </header>
+    
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -36,89 +37,431 @@
             <li><a href="tutor.html">📚 Tutorings</a></li>
             <li><a href="seasons.html">🎯 Seasons</a></li>
             <li><a href="goresources.html">🔗 Go Resources</a></li>
-            <li><a href="mystats.html" class="active">📊 MyStats</a></li>
+            <li><a href="mystats.html" class="active">📊 Player Stats</a></li>
         </ul>
     </nav>
+    
     <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
+    
     <!-- Main Content -->
     <main class="main-content" id="mainContent">
-        <h1 style="text-align:center; margin-top:2rem;">📈 MyStats</h1>
-        <form id="statsForm" style="text-align:center; margin:2rem auto; max-width:400px;">
-            <input type="text" id="usernameInput" placeholder="Enter OGS username" style="padding:0.75rem 1.2rem; border-radius:8px; border:none; width:70%; font-size:1rem;">
-            <button type="submit" style="padding:0.75rem 1.5rem; border-radius:8px; background:linear-gradient(135deg,#00d4ff,#7c3aed); color:#fff; border:none; font-weight:600; margin-left:0.5rem; cursor:pointer;">Search</button>
-        </form>
-        <div id="statsResult" class="stats-placeholder"></div>
+        <div class="stats-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>� Player Statistics</h1>
+                <p>Search for any OGS player to view their game statistics and recent matches</p>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-box">
+                    <div class="search-form">
+                        <input type="text" id="usernameInput" placeholder="Enter OGS username or ID..." class="search-input">
+                        <button type="button" id="searchBtn" class="search-button">
+                            <span class="search-icon">🔍</span>
+                            Search
+                        </button>
+                    </div>
+                    
+                    <div class="search-options">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="exactSearch">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Exact username search</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Player Selection (shown when multiple players found) -->
+            <div id="playerSelection" class="player-selection" style="display: none;">
+                <h3>Multiple players found</h3>
+                <div id="playerList" class="player-list"></div>
+            </div>
+
+            <!-- Stats Results -->
+            <div id="statsContainer" class="stats-results" style="display: none;">
+                <!-- Player Info Header -->
+                <div id="playerInfo" class="player-info"></div>
+                
+                <!-- Controls -->
+                <div class="stats-controls">
+                    <div class="control-group">
+                        <label for="gamesPerPage">Games per page:</label>
+                        <select id="gamesPerPage" class="control-select">
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="maxGames">Max games to load:</label>
+                        <select id="maxGames" class="control-select">
+                            <option value="20" selected>20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="500">500</option>
+                            <option value="1000">1000</option>
+                            <option value="5000">5000</option>
+                        </select>
+                    </div>
+                    
+                    <button id="refreshGames" class="refresh-button">🔄 Refresh Games</button>
+                </div>
+
+                <!-- Games Table -->
+                <div class="games-table-container">
+                    <table id="gamesTable" class="games-table">
+                        <thead>
+                            <tr>
+                                <th>Opponent</th>
+                                <th>Color</th>
+                                <th>Result</th>
+                                <th>Date</th>
+                                <th>Game Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gamesTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div id="pagination" class="pagination"></div>
+                
+                <!-- Loading indicator -->
+                <div id="loadingGames" class="loading-indicator" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Loading games...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Modal -->
+        <div id="customModal" class="custom-modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Notification</h3>
+                    <button class="modal-close" id="modalClose">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button id="modalOk" class="modal-button">OK</button>
+                </div>
+            </div>
+        </div>
     </main>
+
     <script>
-        // OGS username search and stats fetch
-        document.getElementById('statsForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const username = document.getElementById('usernameInput').value.trim();
-            const statsResult = document.getElementById('statsResult');
-            statsResult.innerHTML = '';
-            
-            if (!username) {
-                alert('Please enter a username.');
+        // Global variables
+        let currentPlayer = null;
+        let allGames = [];
+        let currentPage = 1;
+        let gamesPerPage = 10;
+
+        // DOM elements
+        const usernameInput = document.getElementById('usernameInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const exactSearch = document.getElementById('exactSearch');
+        const playerSelection = document.getElementById('playerSelection');
+        const playerList = document.getElementById('playerList');
+        const statsContainer = document.getElementById('statsContainer');
+        const playerInfo = document.getElementById('playerInfo');
+        const gamesPerPageSelect = document.getElementById('gamesPerPage');
+        const maxGamesSelect = document.getElementById('maxGames');
+        const refreshGamesBtn = document.getElementById('refreshGames');
+        const gamesTableBody = document.getElementById('gamesTableBody');
+        const pagination = document.getElementById('pagination');
+        const loadingGames = document.getElementById('loadingGames');
+
+        // Custom modal functions
+        function showModal(title, message) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('customModal').style.display = 'flex';
+        }
+
+        function hideModal() {
+            document.getElementById('customModal').style.display = 'none';
+        }
+
+        // Event listeners for modal
+        document.getElementById('modalClose').addEventListener('click', hideModal);
+        document.getElementById('modalOk').addEventListener('click', hideModal);
+        document.getElementById('customModal').addEventListener('click', function(e) {
+            if (e.target === this) hideModal();
+        });
+
+        // Search functionality
+        searchBtn.addEventListener('click', searchPlayer);
+        usernameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchPlayer();
+        });
+
+        async function searchPlayer() {
+            const query = usernameInput.value.trim();
+            if (!query) {
+                showModal('Input Required', 'Please enter a username or player ID.');
                 return;
             }
+
+            // Hide previous results
+            playerSelection.style.display = 'none';
+            statsContainer.style.display = 'none';
+
+            try {
+                // Check if it's a numeric ID
+                if (/^\d+$/.test(query)) {
+                    // Direct ID search
+                    await loadPlayerById(parseInt(query));
+                } else {
+                    // Username search
+                    if (exactSearch.checked) {
+                        await searchExactUsername(query);
+                    } else {
+                        await searchUsernamePartial(query);
+                    }
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+                showModal('Search Error', 'An error occurred while searching. Please try again.');
+            }
+        }
+
+        async function loadPlayerById(playerId) {
+            try {
+                const response = await fetch(`https://online-go.com/api/v1/players/${playerId}/`);
+                if (!response.ok) {
+                    showModal('Player Not Found', 'No player found with that ID.');
+                    return;
+                }
+                const player = await response.json();
+                currentPlayer = player;
+                displayPlayerStats(player);
+            } catch (error) {
+                showModal('Error', 'Failed to load player information.');
+            }
+        }
+
+        async function searchExactUsername(username) {
+            try {
+                const response = await fetch(`https://online-go.com/api/v1/players?username=${encodeURIComponent(username)}`);
+                const data = await response.json();
+                
+                if (!data.results || data.results.length === 0) {
+                    showModal('Player Not Found', `No player found with username "${username}". Please try turning off exact username search to find similar usernames.`);
+                    return;
+                }
+
+                const exactMatch = data.results.find(p => p.username.toLowerCase() === username.toLowerCase());
+                if (exactMatch) {
+                    currentPlayer = exactMatch;
+                    displayPlayerStats(exactMatch);
+                } else {
+                    showModal('Player Not Found', `No exact match found for "${username}". Please try turning off exact username search.`);
+                }
+            } catch (error) {
+                showModal('Error', 'Failed to search for player.');
+            }
+        }
+
+        async function searchUsernamePartial(username) {
+            try {
+                const response = await fetch(`https://online-go.com/api/v1/players?username=${encodeURIComponent(username)}`);
+                const data = await response.json();
+                
+                if (!data.results || data.results.length === 0) {
+                    showModal('No Results', `No players found matching "${username}".`);
+                    return;
+                }
+
+                if (data.results.length === 1) {
+                    currentPlayer = data.results[0];
+                    displayPlayerStats(data.results[0]);
+                } else {
+                    displayPlayerSelection(data.results);
+                }
+            } catch (error) {
+                showModal('Error', 'Failed to search for players.');
+            }
+        }
+
+        function displayPlayerSelection(players) {
+            playerList.innerHTML = '';
+            players.forEach(player => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'player-item';
+                playerDiv.innerHTML = `
+                    <div class="player-details">
+                        <strong>${player.username}</strong>
+                        <span class="player-rank">${player.ranking || 'Unranked'}</span>
+                    </div>
+                `;
+                playerDiv.addEventListener('click', () => {
+                    currentPlayer = player;
+                    displayPlayerStats(player);
+                    playerSelection.style.display = 'none';
+                });
+                playerList.appendChild(playerDiv);
+            });
+            playerSelection.style.display = 'block';
+        }
+
+        function displayPlayerStats(player) {
+            playerInfo.innerHTML = `
+                <div class="player-header">
+                    <h2>${player.username}</h2>
+                    <div class="player-details">
+                        <span class="rank">${player.ranking || 'Unranked'}</span>
+                        <span class="player-id">ID: ${player.id}</span>
+                    </div>
+                </div>
+            `;
             
-            statsResult.innerHTML = '<p>🔍 Looking up username on OGS...</p>';
+            statsContainer.style.display = 'block';
+            loadGames();
+        }
+
+        async function loadGames() {
+            if (!currentPlayer) return;
+            
+            loadingGames.style.display = 'block';
+            const maxGames = parseInt(maxGamesSelect.value);
             
             try {
-                // Check if username exists on OGS
-                const userResp = await fetch(`https://online-go.com/api/v1/players?username=${encodeURIComponent(username)}`);
-                const userData = await userResp.json();
+                const response = await fetch(`https://online-go.com/api/v1/players/${currentPlayer.id}/games/?page_size=${maxGames}&ordering=-ended`);
+                const data = await response.json();
                 
-                if (!userData.results || userData.results.length === 0) {
-                    statsResult.innerHTML = '<p>❌ Username not found on OGS. Please check the spelling and try again.</p>';
-                    return;
-                }
-                
-                // Username exists, fetch stats from deployed backend
-                statsResult.innerHTML = '<p>✅ Username found! Fetching stats for <b>' + username + '</b>...</p>';
-                
-                const backendUrl = 'https://planet-go-back-end.vercel.app/api/stats?username=' + encodeURIComponent(username);
-                console.log('Fetching from:', backendUrl);
-                
-                const statsResp = await fetch(backendUrl);
-                console.log('Response status:', statsResp.status);
-                
-                if (!statsResp.ok) {
-                    const errorText = await statsResp.text();
-                    console.error('Backend error:', errorText);
-                    statsResult.innerHTML = `<p>❌ Backend error (${statsResp.status}). Please try again later.</p>`;
-                    return;
-                }
-                
-                const statsData = await statsResp.json();
-                console.log('Stats data:', statsData);
-                
-                // Display results
-                if (statsData && statsData.results && statsData.results.length > 0) {
-                    const gamesCount = statsData.results.length;
-                    statsResult.innerHTML = `
-                        <div style="background: rgba(0,255,0,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-                            <h3>📊 Stats for ${username}</h3>
-                            <p><b>Total Games:</b> ${gamesCount}</p>
-                            <p><small>More detailed stats coming soon!</small></p>
-                        </div>
-                    `;
-                } else {
-                    statsResult.innerHTML = `<p>📋 No games found for <b>${username}</b>.</p>`;
-                }
-            } catch (err) {
-                console.error('Error fetching stats:', err);
-                statsResult.innerHTML = '<p>❌ Error fetching stats. Please try again later.</p>';
+                allGames = data.results || [];
+                currentPage = 1;
+                displayGames();
+                setupPagination();
+            } catch (error) {
+                showModal('Error', 'Failed to load games.');
+            } finally {
+                loadingGames.style.display = 'none';
             }
+        }
+
+        function displayGames() {
+            gamesPerPage = parseInt(gamesPerPageSelect.value);
+            const start = (currentPage - 1) * gamesPerPage;
+            const end = start + gamesPerPage;
+            const pagingatedGames = allGames.slice(start, end);
+            
+            gamesTableBody.innerHTML = '';
+            
+            pagingatedGames.forEach(game => {
+                const row = document.createElement('tr');
+                
+                // Determine player color and opponent
+                const isBlack = game.players.black.id === currentPlayer.id;
+                const opponent = isBlack ? game.players.white : game.players.black;
+                const playerColor = isBlack ? 'Black' : 'White';
+                
+                // Determine result
+                let result = 'In Progress';
+                if (game.ended) {
+                    const winner = game.black_lost ? 'white' : 'black';
+                    const playerWon = (isBlack && winner === 'black') || (!isBlack && winner === 'white');
+                    result = playerWon ? 'W' : 'L';
+                    
+                    // Add margin if available
+                    if (game.outcome && (game.outcome.includes('points') || game.outcome.includes('resign'))) {
+                        result += ` (${game.outcome.split(' ').slice(-1)[0]})`;
+                    }
+                }
+                
+                // Format date
+                const date = new Date(game.ended || game.started).toLocaleDateString();
+                
+                row.innerHTML = `
+                    <td>${opponent.username}</td>
+                    <td><span class="color-badge ${playerColor.toLowerCase()}">${playerColor}</span></td>
+                    <td><span class="result ${result.startsWith('W') ? 'win' : result.startsWith('L') ? 'loss' : 'ongoing'}">${result}</span></td>
+                    <td>${date}</td>
+                    <td><a href="https://online-go.com/game/${game.id}" target="_blank" class="game-link">View Game</a></td>
+                `;
+                
+                gamesTableBody.appendChild(row);
+            });
+        }
+
+        function setupPagination() {
+            const totalPages = Math.ceil(allGames.length / gamesPerPage);
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            // Previous button
+            if (currentPage > 1) {
+                const prevBtn = document.createElement('button');
+                prevBtn.textContent = '← Previous';
+                prevBtn.className = 'pagination-btn';
+                prevBtn.addEventListener('click', () => {
+                    currentPage--;
+                    displayGames();
+                    setupPagination();
+                });
+                pagination.appendChild(prevBtn);
+            }
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage || i === 1 || i === totalPages || Math.abs(i - currentPage) <= 2) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.textContent = i;
+                    pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+                    pageBtn.addEventListener('click', () => {
+                        currentPage = i;
+                        displayGames();
+                        setupPagination();
+                    });
+                    pagination.appendChild(pageBtn);
+                } else if (Math.abs(i - currentPage) === 3) {
+                    const dots = document.createElement('span');
+                    dots.textContent = '...';
+                    dots.className = 'pagination-dots';
+                    pagination.appendChild(dots);
+                }
+            }
+            
+            // Next button
+            if (currentPage < totalPages) {
+                const nextBtn = document.createElement('button');
+                nextBtn.textContent = 'Next →';
+                nextBtn.className = 'pagination-btn';
+                nextBtn.addEventListener('click', () => {
+                    currentPage++;
+                    displayGames();
+                    setupPagination();
+                });
+                pagination.appendChild(nextBtn);
+            }
+        }
+
+        // Control event listeners
+        gamesPerPageSelect.addEventListener('change', () => {
+            currentPage = 1;
+            displayGames();
+            setupPagination();
         });
-        // Sidebar functionality (same as home.html)
+
+        maxGamesSelect.addEventListener('change', loadGames);
+        refreshGamesBtn.addEventListener('click', loadGames);
+
+        // Sidebar functionality
         const hamburger = document.getElementById('hamburger');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
         const header = document.getElementById('header');
         const mainContent = document.getElementById('mainContent');
         let sidebarOpen = false;
+        
         function toggleSidebar() {
             sidebarOpen = !sidebarOpen;
             if (sidebarOpen) {
@@ -135,8 +478,10 @@
                 mainContent.classList.remove('sidebar-open');
             }
         }
+        
         hamburger.addEventListener('click', toggleSidebar);
         overlay.addEventListener('click', toggleSidebar);
+        
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && sidebarOpen) {
                 toggleSidebar();
